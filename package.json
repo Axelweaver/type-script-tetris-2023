@@ -1,0 +1,19 @@
+{
+  "name": "type-script-tetris-2023",
+  "version": "1.0.0",
+  "description": "Remake of the world famous Tetris game",
+  "main": "./src/index.ts",
+  "repository": "https://github.com/axelweaver/type-script-tetris-2023",
+  "author": "Bassist.AxeL",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6",
+    "vite": "^4.4.7"
+  },
+ "packageManager": "yarn@3.6.1"
+ }
