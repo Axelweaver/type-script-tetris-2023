@@ -1,5 +1,5 @@
 
-export default function drawText(
+export default function drawText (
     context: CanvasRenderingContext2D | null,
     color: string,
     font: string,

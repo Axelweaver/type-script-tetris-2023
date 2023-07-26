@@ -1,5 +1,5 @@
 
-export default function drawRect(
+export default function drawRect (
     context: CanvasRenderingContext2D | null,
     color: string,
     x: number,
