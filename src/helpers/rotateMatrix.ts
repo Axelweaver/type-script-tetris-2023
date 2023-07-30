@@ -5,11 +5,7 @@ export default function rotateMatrix(matrix: number[][]): number[][] {
 
     const result: number[][] = matrix.map((row, rowIndex) =>
 
-      row.map((_column, columnIndex) => {
-        //let c = column;
-        return matrix[countRows - columnIndex][rowIndex]
-      
-      })
+      row.map((_column, columnIndex) => matrix[countRows - columnIndex][rowIndex])
 
     );
     

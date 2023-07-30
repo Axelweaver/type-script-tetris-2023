@@ -1,5 +1,4 @@
-
-export default function drawRect (
+export default function drawEmptyRect (
     context: CanvasRenderingContext2D | null,
     color: string,
     x: number,
@@ -11,9 +10,6 @@ export default function drawRect (
             return;
         }
         
-        context.fillStyle = color;
-        context.beginPath();
-        context.rect(x, y, width, height);
-        context.fill();
-        context.stroke();            
+        context.strokeStyle = color;
+        context.strokeRect(x, y, width, height);
 }

@@ -1,5 +1,26 @@
-//export const enum MatrixType { 0, 1 };
+export interface IRectangle {
+    positionX: number;
+    positionY: number;
+    width: number;
+    height: number;
+}
 
-export type MatrixRow = [number, number, number, number ];
+export interface ITextInfo {
+    positionX: number;
+    positionY: number;
+    fontSize: number;
+    font: string;
+    align: CanvasTextAlign;
+}
 
-export type Matrix = [MatrixRow, MatrixRow, MatrixRow, MatrixRow];
+export type Figure = {
+    matrix: number[][];
+    color: string;
+    rowIndex: number;
+    columnIndex: number;
+};
+
+export type GameSquare = {
+    width: number;
+    height: number;
+};
