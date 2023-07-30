@@ -74,6 +74,20 @@ export class MainView {
   drawNextFigure(): void {
   }
 
+  drawGameFigure(figure: GameFigure){
+    figure.matrix.forEach((row, rowIndex) =>
+      row.forEach((column, columnIndex) => {
+        if(column === 1){
+          this.drawGameSquare(
+            figure.columnIndex + columnIndex,
+            figure.rowIndex + rowIndex,
+            figure.color
+          );
+        }
+      })
+    );
+  }
+
   drawGameSquare(columnIndex: number, rowIndex: number, color: string): void {
     const x = this._gameField.positionX + 
       (this._gameSquare.width + GAME_FIELD_PADDING) * columnIndex;

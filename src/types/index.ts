@@ -13,13 +13,6 @@ export interface ITextInfo {
     align: CanvasTextAlign;
 }
 
-export type Figure = {
-    matrix: number[][];
-    color: string;
-    rowIndex: number;
-    columnIndex: number;
-};
-
 export type GameSquare = {
     width: number;
     height: number;

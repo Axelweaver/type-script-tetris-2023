@@ -1,0 +1,1 @@
+export { default as GameFigure } from './GameFigure';

@@ -1,4 +1,4 @@
-// imports
+import { GameFigure } from './sprites';
 import { rotateMatrix } from './helpers';
 import { MainView } from './mainView';
 import { GAME_OVER_COLOR, SECONDARY_TEXT_COLOR } from './setup';
@@ -45,9 +45,16 @@ view.drawGameField();
 //view.drawInfo('GAME OVER', GAME_OVER_COLOR);
 //view.drawSecondaryInfo('secondary info', SECONDARY_TEXT_COLOR);
 
-for(let i = 0; i < 20; ++i){
-    for(let j = 0; j < 10; ++j){
-        view.drawGameSquare(j, i, 'blue');
-    }
-}
+// for(let i = 0; i < 20; ++i){
+//     for(let j = 0; j < 10; ++j){
+//         view.drawGameSquare(j, i, 'blue');
+//     }
+// }
 
+let figure = new GameFigure();
+view.drawGameFigure(figure);
+/* I - lightBlue, J - red, L - green, O - blue, S - cyan, T - yellow, Z - pink
+
+                    ■■■      ■■■        ■■         ■■       ■■■         ■■
+     ■■■■             ▀      ▀          ▀▀        ▀▀         ▀           ▀▀
+*/
