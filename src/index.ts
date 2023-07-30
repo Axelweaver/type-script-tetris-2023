@@ -4,20 +4,64 @@ import { MainView } from './mainView';
 import { 
     GAME_OVER_COLOR, 
     SECONDARY_TEXT_COLOR, 
-    GAME_MOVE_PER_FRAMES 
+    GAME_MOVE_PER_FRAMES,
+    GAME_FIELD_ROWS,
+    GAME_FIELD_COLUMNS
 } from './setup';
 
 console.log('index.ts');
 
-let matrix: Matrix = [
-    [0, 1, 0, 0],
-    [0, 1, 0, 0],
-    [1, 1, 0, 0],
-    [0, 0, 0, 0]
- ];
+let moveLeft = false;
+let moveRight = false;
+let moveDown = false;
+let rotateFigure = false;
 
+const handleKeyUp = (e: KeyboardEvent): void => {
+    if (e.code === 'ArrowLeft' || e.key === 'ArrowLeft' ||
+    e.code === 'KeyA' || e.key.toUpperCase() === 'A') {
+        moveLeft = false;
+    }
 
- 
+    if (e.code === 'ArrowRight' || e.key === 'ArrowRight' ||
+    e.code === 'KeyD' || e.key.toUpperCase() === 'D') {
+        moveRight = false;
+    }
+
+    if (e.code === 'ArrowDown' || e.key === 'ArrowDown' ||
+    e.code === 'KeyS' || e.key.toUpperCase() === 'S') {
+        moveDown = false;
+    }
+
+    if (e.code === 'ArrowUp' || e.key === 'ArrowUp' ||
+    e.code === 'KeyW' || e.key.toUpperCase() === 'W') {
+        rotateFigure = false;
+    }    
+};
+
+const handleKeyDown = (e: KeyboardEvent): void => {
+    if (e.code === 'ArrowLeft' || e.key === 'ArrowLeft' ||
+    e.code === 'KeyA' || e.key.toUpperCase() === 'A') {
+        moveLeft = true;
+    }
+
+    if (e.code === 'ArrowRight' || e.key === 'ArrowRight' ||
+    e.code === 'KeyD' || e.key.toUpperCase() === 'D') {
+        moveRight = true;
+    }
+
+    if (e.code === 'ArrowDown' || e.key === 'ArrowDown' ||
+    e.code === 'KeyS' || e.key.toUpperCase() === 'S') {
+        moveDown = true;
+    }
+
+    if (e.code === 'ArrowUp' || e.key === 'ArrowUp' ||
+    e.code === 'KeyW' || e.key.toUpperCase() === 'W') {
+        rotateFigure = true;
+    }   
+}; 
+
+document.addEventListener('keydown', handleKeyDown);
+document.addEventListener('keyup', handleKeyUp);
 
 // console.log('old matrix', matrix);
 
@@ -42,16 +86,54 @@ let matrix: Matrix = [
 
 
 // start
+let nextFigure = new GameFigure();
+let figure = new GameFigure();
 let countFrames = 0;
+let countKeyboardFrames = 0;
+
 function gameLoop(view: MainView, figure: GameFigure) {
     view.clearGameField();
+    view.drawGameFigure(figure);    
+
+
+    if(++countKeyboardFrames > 14) {
+        if(moveLeft && figure.columnIndex > 0){
+            figure.moveLeft();
+        }
+        if(moveRight && (figure.columnIndex +
+            figure.width) < GAME_FIELD_COLUMNS){
+            figure.moveRight();
+        }
+        if(moveDown && (
+            figure.rowIndex + figure.height) < GAME_FIELD_ROWS){
+            figure.moveDown();
+        }
+        if(rotateFigure){
+            figure.rotate();
+            
+            while (figure.columnIndex + figure.width >= GAME_FIELD_COLUMNS){
+               figure.moveLeft();
+            }
+
+            
+        }
+        countKeyboardFrames = 0;    
+    }
+
 
     if(++countFrames > GAME_MOVE_PER_FRAMES){
-        figure.moveDown();
+        if(figure.rowIndex + figure.height >= GAME_FIELD_ROWS){
+            figure = nextFigure;
+            nextFigure = new GameFigure();
+            view.cleartNextFigure();
+            view.drawNextFigure(nextFigure);
+        } else {
+            figure.moveDown();            
+        }
         countFrames = 0;
     }
 
-    view.drawGameFigure(figure);
+
 
     requestAnimationFrame(() => { gameLoop(view, figure); });
 }
@@ -69,10 +151,11 @@ view.drawNextFigureField();
 //     }
 // }
 
-let figure = new GameFigure();
-view.drawGameFigure(figure);
+
+console.log('figure width:', figure.width, 'figure height:', figure.height);
+//view.drawGameFigure(figure);
 view.drawNextFigure(figure);
-//gameLoop(view, figure);
+gameLoop(view, figure);
 
 
 /* I - lightBlue, J - red, L - green, O - blue, S - cyan, T - yellow, Z - pink

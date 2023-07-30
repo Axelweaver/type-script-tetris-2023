@@ -12,15 +12,15 @@ export const SECONDARY_TEXT_COLOR: string = '#F0FFF0';
 
 export const GAME_FIGURE_MATRIX: string[][][] = [
     [
-        [0, 0, 1, 0],
-        [0, 0, 1, 0],
-        [0, 0, 1, 0],
-        [0, 0, 1, 0]
+        [1, 0, 0, 0],
+        [1, 0, 0, 0],
+        [1, 0, 0, 0],
+        [1, 0, 0, 0]
     ],
     [
-        [0, 0, 0],
         [1, 1, 1],
-        [0, 0, 1]
+        [0, 0, 1],
+        [0, 0, 0]        
     ],    
     [
         [1, 1, 1],
@@ -37,17 +37,17 @@ export const GAME_FIGURE_MATRIX: string[][][] = [
         [0, 0, 0]
     ],    
     [
-        [0, 0, 0],
         [1, 1, 1],
-        [0, 1, 0]
+        [0, 1, 0],
+        [0, 0, 0]
     ],    
     [
-        [0, 0, 0],
         [1, 1, 0],
-        [0, 1, 1]
-    ]  
+        [0, 1, 1],
+        [0, 0, 0]
+     ]  
 ];
-export const GAME_FIGURE_COLORS: stringp[] = [
+export const GAME_FIGURE_COLORS: string[] = [
     '#87CEFA',
     '#CD5C5C',
     '#228B22',

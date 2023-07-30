@@ -1,4 +1,3 @@
-
 export default function rotateMatrix(matrix: number[][]): number[][] {
     
   const countRows:number = matrix.length - 1;
