@@ -40,4 +40,16 @@ export default class GameFigure {
     get columnIndex (): number {
         return this._columnIndex;
     }
+
+    moveDown(): void {
+        this._rowIndex += 1;
+    }
+
+    moveLeft(): void {
+        this._columnIndex -= 1;
+    }
+
+    moveRight(): void {
+        this._columnIndex += 1;
+    }
 }

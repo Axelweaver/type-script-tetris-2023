@@ -1,7 +1,11 @@
 import { GameFigure } from './sprites';
 import { rotateMatrix } from './helpers';
 import { MainView } from './mainView';
-import { GAME_OVER_COLOR, SECONDARY_TEXT_COLOR } from './setup';
+import { 
+    GAME_OVER_COLOR, 
+    SECONDARY_TEXT_COLOR, 
+    GAME_MOVE_PER_FRAMES 
+} from './setup';
 
 console.log('index.ts');
 
@@ -38,9 +42,23 @@ let matrix: Matrix = [
 
 
 // start
+let countFrames = 0;
+function gameLoop(view: MainView, figure: GameFigure) {
+    view.clearGameField();
+
+    if(++countFrames > GAME_MOVE_PER_FRAMES){
+        figure.moveDown();
+        countFrames = 0;
+    }
+
+    view.drawGameFigure(figure);
+
+    requestAnimationFrame(() => { gameLoop(view, figure); });
+}
 
 const view = new MainView("#gameCanvas");
 view.drawGameField();
+view.drawNextFigureField();
 
 //view.drawInfo('GAME OVER', GAME_OVER_COLOR);
 //view.drawSecondaryInfo('secondary info', SECONDARY_TEXT_COLOR);
@@ -53,6 +71,10 @@ view.drawGameField();
 
 let figure = new GameFigure();
 view.drawGameFigure(figure);
+view.drawNextFigure(figure);
+//gameLoop(view, figure);
+
+
 /* I - lightBlue, J - red, L - green, O - blue, S - cyan, T - yellow, Z - pink
 
                     ■■■      ■■■        ■■         ■■       ■■■         ■■

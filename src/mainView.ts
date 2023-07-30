@@ -6,6 +6,7 @@ export class MainView {
   canvas: HTMLCanvasElement;
   private _context: CanvasRenderingContext2D | null;
   private readonly _gameField: IRectangle;
+  private readonly _nextFigureField: IRectangle;
   private readonly _textInfo: ITextInfo;
   private readonly _secondaryTextInfo: ITextInfo;
   private readonly _gameSquare: GameSquare;
@@ -24,6 +25,14 @@ export class MainView {
       positionY: Math.round(this.canvas.height / 2) - Math.round(gameFieldWidth / 2) * 2,
       width: gameFieldWidth,
       height: gameFieldWidth * 2
+    };
+
+    this._nextFigureField = {
+      positionX: this._gameField.positionX + 
+        this._gameField.width + Math.round(gameFieldWidth / 8),
+      positionY: this._gameField.positionY + Math.round(gameFieldWidth / 8),
+      width: Math.round(gameFieldWidth / 4),
+      height: Math.round(gameFieldWidth / 4) * 2
     };
 
     this._textInfo = {
@@ -55,7 +64,20 @@ export class MainView {
   }
   
   cleartNextFigure(): void {
+    clearRect(this._context, this._nextFigureField);
+  }
 
+  drawNextFigureField(): void {
+    for(let i = 1; i < 3; ++i){
+      drawEmptyRect(
+        this._context,
+        BORDER_COLOR,
+        this._nextFigureField.positionX - i,
+        this._nextFigureField.positionY - i,
+        this._nextFigureField.width + i * 2,
+        this._nextFigureField.height + i * 2
+        );      
+    }
   }
 
   drawGameField(): void {
@@ -71,7 +93,28 @@ export class MainView {
     }
   }
 
-  drawNextFigure(): void {
+  drawNextFigure(figure: GameFigure): void {
+    const nextSquareSize = Math.round(this._nextFigureField.width / 5) - 1;
+    figure.matrix.forEach((row, rowIndex) =>
+      row.forEach((column, columnIndex) => {
+        if(column === 1){
+          const x = this._nextFigureField.positionX + 
+            (columnIndex + 1) * (nextSquareSize + 1);
+
+          const y = this._nextFigureField.positionY +
+            (rowIndex + 3) * (nextSquareSize + 1);
+
+          drawFilledRect(
+            this._context,
+            figure.color,
+            x,
+            y,
+            nextSquareSize,
+            nextSquareSize
+          );
+        }
+      })
+    );
   }
 
   drawGameFigure(figure: GameFigure){
