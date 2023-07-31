@@ -5,7 +5,6 @@ export default function drawText (
     textInfo: ITextInfo,
     color: string,
     text: string): void {
-        console.log(`drawText "${text}", context: `, context, 'textInfo: ', textInfo);
         if(!context){
             return;
         }

@@ -9,11 +9,6 @@ export default function drawFilledRect (
         if(!context){
             return;
         }
-        
         context.fillStyle = color;
         context.fillRect(x, y, width, height);
-        // context.beginPath();
-        // context.rect(x, y, width, height);
-        // context.fill();            
-        // context.stroke();            
 }

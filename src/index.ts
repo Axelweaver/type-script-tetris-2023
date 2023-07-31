@@ -121,8 +121,6 @@ view.drawNextFigureField();
 
 //view.drawInfo('GAME OVER', GAME_OVER_COLOR);
 //view.drawSecondaryInfo('secondary info', SECONDARY_TEXT_COLOR);
-
-console.log('figure width:', figure.width, 'figure height:', figure.height);
 //view.drawGameFigure(figure);
 view.drawNextFigure(nextFigure);
 view.drawScoreInfo();
