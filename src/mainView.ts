@@ -1,5 +1,5 @@
 import { Figure, GameField, IRectangle, ITextInfo, GameSquare } from './types';
-import { clearRect, drawFilledRect, drawEmptyRect, drawText } from './helpers';
+import { clearRect, drawFilledRect, drawEmptyRect, drawText, drawCorner } from './helpers';
 import { BORDER_COLOR, GAME_FIELD_COLUMNS, GAME_FIELD_ROWS, GAME_FIELD_PADDING } from './setup';
 import { GameFieldMatrix } from './sprites';
 
@@ -11,14 +11,10 @@ export class MainView {
   private readonly _textInfo: ITextInfo;
   private readonly _secondaryTextInfo: ITextInfo;
   private readonly _gameSquare: GameSquare;
-  //figure: Figure;
 
   constructor(canvasName: string) {
     this.canvas = document.querySelector(canvasName) as HTMLCanvasElement;
     this._context = this.canvas.getContext('2d');
-
-    // const textPositionY = Math.round(this.canvas.height / 2) + Math.round(this.canvas.height / 5);
-    // const textPositionX = Math.round(this.canvas.width / 2);
 
     const gameFieldWidth = Math.round(this.canvas.width / 2);
     this._gameField = {
@@ -43,7 +39,7 @@ export class MainView {
       font: '',
       align: 'center'
     };
-    this._textInfo.font = `bold ${this._textInfo.fontSize}px Verdana`;
+    this._textInfo.font = `bold ${this._textInfo.fontSize}px Cascadia Mono SemiBold`;
 
     this._secondaryTextInfo = {
       positionX: Math.round(this.canvas.width / 2),
@@ -52,7 +48,7 @@ export class MainView {
       font: '',
       align: 'center'
     };
-    this._secondaryTextInfo.font = `bold ${this._secondaryTextInfo.fontSize}px Verdana`;
+    this._secondaryTextInfo.font = `bold ${this._secondaryTextInfo.fontSize}px Cascadia Mono SemiBold`;
 
     this._gameSquare = {
       width: Math.round(gameFieldWidth / GAME_FIELD_COLUMNS) - GAME_FIELD_PADDING,
@@ -68,7 +64,58 @@ export class MainView {
     clearRect(this._context, this._nextFigureField);
   }
 
+  drawScoreInfo(): void {
+    const scoreTextInfo = this._secondaryTextInfo;
+    scoreTextInfo.positionX = 12;
+    scoreTextInfo.positionY = this._nextFigureField.positionY - 20;
+    scoreTextInfo.font = `bold 16px Cascadia Mono SemiBold`;
+    scoreTextInfo.align = 'left';
+
+    drawText(
+      this._context,
+      scoreTextInfo,
+      BORDER_COLOR,
+      'SCORE:');
+
+      scoreTextInfo.font = `bold 20px Cascadia Mono SemiBold`;
+      scoreTextInfo.positionY += 40;
+
+      drawText(
+        this._context,
+        scoreTextInfo,
+        BORDER_COLOR,
+        '000000');
+
+      scoreTextInfo.positionY += 80;
+      scoreTextInfo.font = `bold 16px Cascadia Mono SemiBold`;
+      drawText(
+        this._context,
+        scoreTextInfo,
+        BORDER_COLOR,
+        'LEVEL: 1');
+
+        scoreTextInfo.positionY += 80;
+        drawText(
+          this._context,
+          scoreTextInfo,
+          BORDER_COLOR,
+          'LINES: 0');
+  }
+
   drawNextFigureField(): void {
+    const nextTextInfo = this._secondaryTextInfo;
+    nextTextInfo.positionX = this._nextFigureField.positionX;
+    nextTextInfo.positionY = this._nextFigureField.positionY - 20;
+    nextTextInfo.font = `bold 16px Cascadia Mono SemiBold`;
+    nextTextInfo.align = 'left';
+
+    drawText(
+      this._context,
+      nextTextInfo,
+      BORDER_COLOR,
+      'N E X T:'
+    );
+
     for(let i = 1; i < 3; ++i){
       drawEmptyRect(
         this._context,
@@ -86,7 +133,7 @@ export class MainView {
       drawEmptyRect(
         this._context,
         BORDER_COLOR,
-        this._gameField.positionX - i,
+        this._gameField.positionX - 1 - i,
         this._gameField.positionY - i,
         this._gameField.width + i * 2,
         this._gameField.height + i * 2
@@ -125,14 +172,21 @@ export class MainView {
           this.drawGameSquare(
             figure.columnIndex + columnIndex,
             figure.rowIndex + rowIndex,
-            figure.color
+            figure.color,
+            figure.darkColor,
+            figure.lightColor
           );
         }
       })
     );
   }
 
-  drawGameSquare(columnIndex: number, rowIndex: number, color: string): void {
+  drawGameSquare(
+    columnIndex: number, 
+    rowIndex: number, 
+    color: string, 
+    darkColor: string, 
+    lightColor: string): void {
     if(rowIndex < 0){
       return;
     }
@@ -149,14 +203,29 @@ export class MainView {
       y,
       this._gameSquare.width,
       this._gameSquare.height
-    )
+    );
+
+    drawCorner(
+      this._context,
+      darkColor,
+      lightColor,
+      x,
+      y,
+      this._gameSquare.width,
+      this._gameSquare.height
+    );
   }
 
   drawFieldMatrix(matrix: GameFieldMatrix): void {
     matrix.coloredMatrix.forEach((row, rowIndex) => {
       row.forEach((column, columnIndex) => {
         if(column?.value === 1) {
-          this.drawGameSquare(columnIndex, rowIndex, column?.color);
+          this.drawGameSquare(
+            columnIndex, 
+            rowIndex, 
+            column?.color,
+            column?.darkColor,
+            column?.lightColor);
         }
       })
     });

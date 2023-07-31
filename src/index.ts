@@ -125,7 +125,8 @@ function gameLoop() {
                figure.moveLeft();
             }
 
-            if((figure.rowIndex + figure.height) >=  GAME_FIELD_ROWS){
+            if((figure.rowIndex + figure.height) >=  GAME_FIELD_ROWS ||
+                fieldMatrix.isCollision(figure)){
                 figure.setMatrix(oldMatrix);
             }
             
@@ -188,6 +189,13 @@ view.drawNextFigureField();
 console.log('figure width:', figure.width, 'figure height:', figure.height);
 //view.drawGameFigure(figure);
 view.drawNextFigure(nextFigure);
+view.drawScoreInfo();
+
+// const audioPlayer = document.getElementById('audioPlayer');
+// audioPlayer.volume = .25;
+// audioPlayer.play();
+//audioPlayer.pause();
+
 gameLoop();
 
 

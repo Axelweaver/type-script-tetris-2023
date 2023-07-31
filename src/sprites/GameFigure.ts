@@ -9,6 +9,8 @@ import {
 export default class GameFigure {
     private readonly _matrix: number[][];
     private readonly _color: string;
+    private readonly _darkColor: string;
+    private readonly _lightColor: string;
     private _rowIndex: number;
     private _columnIndex: number;
     private _width: number;
@@ -18,14 +20,18 @@ export default class GameFigure {
         this._matrix = GAME_FIGURE_MATRIX[
             getRandomNumber(0, GAME_FIGURE_MATRIX.length - 1)
         ];
-        this._color = GAME_FIGURE_COLORS[
+
+        const colors  = GAME_FIGURE_COLORS[
             getRandomNumber(0, GAME_FIGURE_COLORS.length - 1)
         ];
+        
+        this._color = colors[0];
+        this._darkColor = colors[1];
+        this._lightColor = colors[2];
 
         this._rowIndex = INITIAL_FIGURE_ROW_INDEX;
         this._columnIndex = INITIAL_FIGURE_COL_INDEX;
         this._calcSize();
-
     }
 
     private _calcSize (): void {
@@ -38,22 +44,16 @@ export default class GameFigure {
         this._height = this._matrix.filter(row => 
             row.some(col => col === 1)
             ).length;
-
-        console.log('calc size figure, width:', this._width, 'height:', this._height, this._matrix);
     }
     private _checkAndNormalize (): void {
         while(this._matrix[0].every(col => col === 0)){
-            console.log('_checkAndNormalize old arr:', this._matrix);
             this._matrix = this._matrix.slice(1)
             .concat([new Array(this._matrix.length).fill(0)]);
-            console.log('_checkAndNormalize new arr:', this._matrix);
         }
         while(this._matrix.every(row => row[0] === 0)){
-            console.log('_checkAndNormalize old arr:', this._matrix);
             this._matrix = this._matrix.map(row =>
                 row.slice(1).concat([0])
             );            
-            console.log('_checkAndNormalize new arr:', this._matrix);
         }
     }
 
@@ -63,6 +63,14 @@ export default class GameFigure {
 
     get color (): string {
         return this._color;
+    }
+
+    get darkColor (): string {
+        return this._darkColor;
+    }
+
+    get lightColor (): string {
+        return this._lightColor;
     }
 
     get rowIndex (): number {

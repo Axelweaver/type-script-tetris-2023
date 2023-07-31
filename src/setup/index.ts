@@ -47,12 +47,12 @@ export const GAME_FIGURE_MATRIX: string[][][] = [
         [0, 0, 0]
      ]  
 ];
-export const GAME_FIGURE_COLORS: string[] = [
-    '#87CEFA',
-    '#CD5C5C',
-    '#228B22',
-    '#000080',
-    '#98FB98',
-    '#FFD700',
-    '#FF69B4'
+export const GAME_FIGURE_COLORS: string[][] = [
+    ['#87CEFA', '#48D1CC', '#AFEEEE'],
+    ['#B22222', '#8B0000', '#CD5C5C'],
+    ['#228B22', '#2E8B57', '#98FB98'],
+    ['#0000CD', '#00008B', '#4169E1'],
+    ['#98FB98', '#66CDAA', '#7FFF00'],
+    ['#FFD700', '#DAA520', '#FFFACD'],
+    ['#FF69B4', '#CD5C5C', '#FFB6C1']
 ];

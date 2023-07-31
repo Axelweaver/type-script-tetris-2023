@@ -20,5 +20,7 @@ export type GameSquare = {
 
 export type GameFieldMatrixElement = {
     color: string;
+    darkColor: string;
+    lightColor: string;
     value: number;
 };
