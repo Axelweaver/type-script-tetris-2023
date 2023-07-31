@@ -17,3 +17,8 @@ export type GameSquare = {
     width: number;
     height: number;
 };
+
+export type GameFieldMatrixElement = {
+    color: string;
+    value: number;
+};

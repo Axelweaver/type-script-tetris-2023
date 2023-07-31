@@ -1,4 +1,4 @@
-import { GameFigure } from './sprites';
+import { GameFigure, GameFieldMatrix } from './sprites';
 import { rotateMatrix } from './helpers';
 import { MainView } from './mainView';
 import { 
@@ -84,61 +84,94 @@ document.addEventListener('keyup', handleKeyUp);
 
 // game loop
 
-
+const view = new MainView("#gameCanvas");
 // start
 let nextFigure = new GameFigure();
 let figure = new GameFigure();
 let countFrames = 0;
 let countKeyboardFrames = 0;
+let fieldMatrix = new GameFieldMatrix();
 
-function gameLoop(view: MainView, figure: GameFigure) {
+function gameLoop() {
     view.clearGameField();
-    view.drawGameFigure(figure);    
-
 
     if(++countKeyboardFrames > 14) {
         if(moveLeft && figure.columnIndex > 0){
             figure.moveLeft();
+            if(fieldMatrix.isCollision(figure)){
+                figure.moveRight();
+            }
         }
         if(moveRight && (figure.columnIndex +
             figure.width) < GAME_FIELD_COLUMNS){
             figure.moveRight();
+            if(fieldMatrix.isCollision(figure)){
+                figure.moveLeft();
+            }
         }
-        if(moveDown && (
-            figure.rowIndex + figure.height) < GAME_FIELD_ROWS){
+        if(moveDown &&
+            (figure.rowIndex + figure.height) < GAME_FIELD_ROWS){
             figure.moveDown();
+            if(fieldMatrix.isCollision(figure)){
+                figure.moveUp();
+                mergeFigure();
+            }
         }
         if(rotateFigure){
+            const oldMatrix = figure.matrix;
             figure.rotate();
-            
+
             while (figure.columnIndex + figure.width >= GAME_FIELD_COLUMNS){
                figure.moveLeft();
             }
 
+            if((figure.rowIndex + figure.height) >=  GAME_FIELD_ROWS){
+                figure.setMatrix(oldMatrix);
+            }
             
         }
         countKeyboardFrames = 0;    
     }
 
-
     if(++countFrames > GAME_MOVE_PER_FRAMES){
-        if(figure.rowIndex + figure.height >= GAME_FIELD_ROWS){
-            figure = nextFigure;
-            nextFigure = new GameFigure();
-            view.cleartNextFigure();
-            view.drawNextFigure(nextFigure);
-        } else {
-            figure.moveDown();            
+        
+        if((figure.rowIndex + figure.height) < GAME_FIELD_ROWS){
+            figure.moveDown();
+            if(fieldMatrix.isCollision(figure)){
+                figure.moveUp();
+                mergeFigure();
+            }            
+        }
+
+        if(figure.rowIndex + figure.height >= GAME_FIELD_ROWS) {
+            mergeFigure();
         }
         countFrames = 0;
     }
 
+    view.drawFieldMatrix(fieldMatrix);
+    view.drawGameFigure(figure);
+    
+    if(fieldMatrix.isOver()) {
+        showGameOver();
+        return;
+    }
 
-
-    requestAnimationFrame(() => { gameLoop(view, figure); });
+    requestAnimationFrame(() => { gameLoop(); });
 }
 
-const view = new MainView("#gameCanvas");
+function mergeFigure(): void {
+        fieldMatrix.merge(figure);
+        figure = nextFigure;
+        nextFigure = new GameFigure();
+        view.cleartNextFigure();
+        view.drawNextFigure(nextFigure);
+}
+
+function showGameOver(): void {
+    view.drawInfo('GAME OVER', GAME_OVER_COLOR);
+}
+
 view.drawGameField();
 view.drawNextFigureField();
 
@@ -154,8 +187,8 @@ view.drawNextFigureField();
 
 console.log('figure width:', figure.width, 'figure height:', figure.height);
 //view.drawGameFigure(figure);
-view.drawNextFigure(figure);
-gameLoop(view, figure);
+view.drawNextFigure(nextFigure);
+gameLoop();
 
 
 /* I - lightBlue, J - red, L - green, O - blue, S - cyan, T - yellow, Z - pink

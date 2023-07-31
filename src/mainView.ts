@@ -1,6 +1,7 @@
 import { Figure, GameField, IRectangle, ITextInfo, GameSquare } from './types';
 import { clearRect, drawFilledRect, drawEmptyRect, drawText } from './helpers';
 import { BORDER_COLOR, GAME_FIELD_COLUMNS, GAME_FIELD_ROWS, GAME_FIELD_PADDING } from './setup';
+import { GameFieldMatrix } from './sprites';
 
 export class MainView {
   canvas: HTMLCanvasElement;
@@ -132,6 +133,10 @@ export class MainView {
   }
 
   drawGameSquare(columnIndex: number, rowIndex: number, color: string): void {
+    if(rowIndex < 0){
+      return;
+    }
+    
     const x = this._gameField.positionX + 
       (this._gameSquare.width + GAME_FIELD_PADDING) * columnIndex;
     const y = this._gameField.positionY +
@@ -145,6 +150,16 @@ export class MainView {
       this._gameSquare.width,
       this._gameSquare.height
     )
+  }
+
+  drawFieldMatrix(matrix: GameFieldMatrix): void {
+    matrix.coloredMatrix.forEach((row, rowIndex) => {
+      row.forEach((column, columnIndex) => {
+        if(column?.value === 1) {
+          this.drawGameSquare(columnIndex, rowIndex, column?.color);
+        }
+      })
+    });
   }
 
   drawInfo (text: string, color: string): void {

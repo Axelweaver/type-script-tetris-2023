@@ -30,8 +30,7 @@ export default class GameFigure {
 
     private _calcSize (): void {
         const widthArray = this._matrix.map(row => 
-            row.filter(fcol => fcol === 1)
-            .map((col, ind) => ind + 1))
+            row.map((col, ind) => col === 1 ? ind + 1 : 0))
             .filter(frow => !!frow.length)
             .flatMap(x => x);
 
@@ -39,6 +38,23 @@ export default class GameFigure {
         this._height = this._matrix.filter(row => 
             row.some(col => col === 1)
             ).length;
+
+        console.log('calc size figure, width:', this._width, 'height:', this._height, this._matrix);
+    }
+    private _checkAndNormalize (): void {
+        while(this._matrix[0].every(col => col === 0)){
+            console.log('_checkAndNormalize old arr:', this._matrix);
+            this._matrix = this._matrix.slice(1)
+            .concat([new Array(this._matrix.length).fill(0)]);
+            console.log('_checkAndNormalize new arr:', this._matrix);
+        }
+        while(this._matrix.every(row => row[0] === 0)){
+            console.log('_checkAndNormalize old arr:', this._matrix);
+            this._matrix = this._matrix.map(row =>
+                row.slice(1).concat([0])
+            );            
+            console.log('_checkAndNormalize new arr:', this._matrix);
+        }
     }
 
     get matrix (): number[][] {
@@ -64,20 +80,31 @@ export default class GameFigure {
         return this._height;
     }
 
+    setMatrix(matrix: number[][]) {
+        this._matrix = matrix;
+        this._checkAndNormalize();
+        this._calcSize();
+    }
+
+    moveUp(): void {
+        --this._rowIndex;
+    }
+
     moveDown(): void {
-        this._rowIndex += 1;
+        ++this._rowIndex;
     }
 
     moveLeft(): void {
-        this._columnIndex -= 1;
+        --this._columnIndex;
     }
 
     moveRight(): void {
-        this._columnIndex += 1;
+        ++this._columnIndex;
     }
 
     rotate() {
         this._matrix = rotateMatrix(this._matrix);
+        this._checkAndNormalize();
         this._calcSize();
     }
 }
