@@ -5,7 +5,6 @@ export default function drawEmptyRect (
     y: number,
     width: number,
     height: number): void {
-
         if(!context){
             return;
         }

@@ -7,7 +7,6 @@ export default function clearRect (
         if(!context){
             return;
         }
-        
         context.clearRect(
             rect.positionX,
             rect.positionY,
