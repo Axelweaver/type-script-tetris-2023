@@ -50,6 +50,34 @@ export default class GameFieldMatrix {
         return false;
     }
 
+    hasFullRows(): boolean {
+        if(this._coloredMatrix.some(row =>
+            row.every(column => column.value === 1))) {
+            return true;
+        };
+
+        return false;
+    }
+
+    removeFullRows(): void {
+        // remove full rows from game field matrix
+        const fullRowsIndexes = this._coloredMatrix.map(row, rowIndex =>
+            row.every(column => column.value === 1) ? rowIndex : 0
+        ).filter(x => x > 0);
+        const rowsCount = fullRowsIndexes.length;
+        
+        // add empty rows to begin game field matrix
+        fullRowsIndexes.forEach(ind => this._coloredMatrix.splice(ind, 1));
+        for(let i=0; i < rowsCount; ++i){
+            this._coloredMatrix.unshif({ 
+                color: '',
+                darkColor: '',
+                lightColor: '',
+                value: 0 
+            });
+        }
+    }
+
     isOver(): boolean {
         return this._coloredMatrix[0].some(column => column.value === 1);
     }

@@ -110,6 +110,10 @@ function mergeFigure(): void {
         nextFigure = new GameFigure();
         view.cleartNextFigure();
         view.drawNextFigure(nextFigure);
+
+        if(fieldMatrix.hasFullRows()){
+            fieldMatrix.removeFullRows();
+        }
 }
 
 function showGameOver(): void {
