@@ -60,22 +60,32 @@ export default class GameFieldMatrix {
     }
 
     removeFullRows(): void {
-        // remove full rows from game field matrix
-        const fullRowsIndexes = this._coloredMatrix.map(row, rowIndex =>
-            row.every(column => column.value === 1) ? rowIndex : 0
+        console.log('removeFullRows');
+        // find indexes of full rows
+        const fullRowsIndexes = this._coloredMatrix.map((row, rowIndex) =>
+            row.every(column => column?.value === 1) ? rowIndex : 0
         ).filter(x => x > 0);
+
         const rowsCount = fullRowsIndexes.length;
-        
+        const minIndex = Math.min(...fullRowsIndexes);
+        console.log('removeFullRows', rowsCount);
+
+        console.table(this._coloredMatrix.map(r => r.map(c => c.value)));
+
+        // remove full rows from game field matrix
+        this._coloredMatrix.splice(minIndex, rowsCount);
+
         // add empty rows to begin game field matrix
-        fullRowsIndexes.forEach(ind => this._coloredMatrix.splice(ind, 1));
-        for(let i=0; i < rowsCount; ++i){
-            this._coloredMatrix.unshif({ 
-                color: '',
-                darkColor: '',
-                lightColor: '',
-                value: 0 
-            });
+        for(let i=0; i < rowsCount; ++i) {
+            this._coloredMatrix.unshift(                
+                new Array(GAME_FIELD_COLUMNS).fill({ 
+                    color: '',
+                    darkColor: '',
+                    lightColor: '',
+                    value: 0 
+            }));
         }
+        console.table(this._coloredMatrix.map(r => r.map(c => c.value)));
     }
 
     isOver(): boolean {
