@@ -1,8 +1,8 @@
-import { 
-  type IRectangle, 
-  type ITextInfo, 
-  type GameSquare, 
-  type GameFieldMatrixElement 
+import {
+    type IRectangle,
+    type ITextInfo,
+    type GameSquare,
+    type GameFieldMatrixElement
 } from './types';
 import { clearRect, drawFilledRect, drawEmptyRect, drawText, drawCorner } from './helpers';
 import { BORDER_COLOR, GAME_FIELD_COLUMNS, GAME_FIELD_ROWS, GAME_FIELD_PADDING } from './setup';

@@ -42,12 +42,16 @@ export default class GameFieldMatrix {
     isCollision (figure: GameFigure): boolean {
         for (let rowIndex: number = 0; rowIndex < figure.matrix.length; ++rowIndex) {
             for (let columnIndex: number = 0; columnIndex < figure.matrix[rowIndex].length; ++columnIndex) {
+                if (figure.rowIndex < 0) {
+                    continue;
+                }
+                const collissionRowIndex: number = rowIndex + figure.rowIndex;
+                const collissionColumntIndex: number = columnIndex + figure.columnIndex;
+
+                console.log(figure, this._coloredMatrix, collissionRowIndex, collissionColumntIndex);
+
                 if (figure.matrix[rowIndex][columnIndex] === 1 &&
-                    (this._coloredMatrix[
-                        rowIndex + figure.rowIndex
-                    ][
-                        columnIndex + figure.columnIndex
-                    ].value === 1)) {
+                    (this._coloredMatrix[collissionRowIndex][collissionColumntIndex].value === 1)) {
                     return true;
                 }
             }
