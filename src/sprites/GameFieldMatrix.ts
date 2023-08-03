@@ -48,8 +48,6 @@ export default class GameFieldMatrix {
                 const collissionRowIndex: number = rowIndex + figure.rowIndex;
                 const collissionColumntIndex: number = columnIndex + figure.columnIndex;
 
-                console.log(figure, this._coloredMatrix, collissionRowIndex, collissionColumntIndex);
-
                 if (figure.matrix[rowIndex][columnIndex] === 1 &&
                     (this._coloredMatrix[collissionRowIndex][collissionColumntIndex].value === 1)) {
                     return true;
