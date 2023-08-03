@@ -1,6 +1,9 @@
 # type-script-tetris-2023
 ### An example of a simple Tetris game in the TypeScript programming language
 
+![image](https://github.com/Axelweaver/type-script-tetris-2023/assets/15805062/a406c7a3-7ac4-4727-86e4-dabda2e95204)
+
+
 ### 🌍 Environment
 | Software	| Version(s)
 | --- | ---
