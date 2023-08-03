@@ -34,7 +34,9 @@ let figure = new GameFigure();
 let countFrames = 0;
 let countKeyboardFrames = 0;
 let fieldMatrix = new GameFieldMatrix();
-
+let level = 1;
+let score = 0;
+let lines = 0;
 // game loop
 function gameLoop() {
     view.clearGameField();
@@ -61,7 +63,7 @@ function gameLoop() {
                 mergeFigure();
             }
         }
-        if(keysState.rotateFigure){
+        if(keysState.rotateFigure && figure.rowIndex >= 0) {
             const oldMatrix = figure.matrix;
             figure.rotate();
 
@@ -111,8 +113,14 @@ function mergeFigure(): void {
         view.cleartNextFigure();
         view.drawNextFigure(nextFigure);
 
-        if(fieldMatrix.hasFullRows()){
+        const fullRowsCount = fieldMatrix.getFullRowsCount();
+
+        if(fullRowsCount > 0){
+            score += level * fullRowsCount * 10;
+            lines += fullRowsCount;
             fieldMatrix.removeFullRows();
+            view.clearScoreInfo();
+            view.drawScoreInfo(level, lines, score);
         }
 }
 
@@ -127,7 +135,7 @@ view.drawNextFigureField();
 //view.drawSecondaryInfo('secondary info', SECONDARY_TEXT_COLOR);
 //view.drawGameFigure(figure);
 view.drawNextFigure(nextFigure);
-view.drawScoreInfo();
+view.drawScoreInfo(level, lines, score);
 // start
 gameLoop();
 

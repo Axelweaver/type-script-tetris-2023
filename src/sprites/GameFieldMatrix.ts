@@ -59,11 +59,24 @@ export default class GameFieldMatrix {
         return false;
     }
 
-    removeFullRows(): void {
+    private _getFullRowIndexes(): number[] {
         // find indexes of full rows
         const fullRowsIndexes = this._coloredMatrix.map((row, rowIndex) =>
             row.every(column => column?.value === 1) ? rowIndex : 0
         ).filter(x => x > 0);
+
+        return fullRowsIndexes;
+    }
+
+    getFullRowsCount(): number {
+        const fullRowsIndexes = this._getFullRowIndexes();
+
+        return fullRowsIndexes.length;
+    }
+
+    removeFullRows(): void {
+        // find indexes of full rows
+        const fullRowsIndexes = this._getFullRowIndexes();
 
         const rowsCount = fullRowsIndexes.length;
         const minIndex = Math.min(...fullRowsIndexes);

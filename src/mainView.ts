@@ -8,6 +8,7 @@ export class MainView {
   private _context: CanvasRenderingContext2D | null;
   private readonly _gameField: IRectangle;
   private readonly _nextFigureField: IRectangle;
+  private readonly _scoreField: IRectangle;
   private readonly _textInfo: ITextInfo;
   private readonly _secondaryTextInfo: ITextInfo;
   private readonly _gameSquare: GameSquare;
@@ -30,6 +31,13 @@ export class MainView {
       positionY: this._gameField.positionY + Math.round(gameFieldWidth / 8),
       width: Math.round(gameFieldWidth / 4),
       height: Math.round(gameFieldWidth / 4) * 2
+    };
+
+    this._scoreField = {
+      positionX: 12,
+      positionY: this._nextFigureField.positionY - 20,
+      width: Math.round(this.canvas.width / 4) - 18,
+      height: this._gameField.height
     };
 
     this._textInfo = {
@@ -64,7 +72,11 @@ export class MainView {
     clearRect(this._context, this._nextFigureField);
   }
 
-  drawScoreInfo(): void {
+  clearScoreInfo():void {
+    clearRect(this._context, this._scoreField);
+  }
+
+  drawScoreInfo(level: number, lines: number, score: number): void {
     const scoreTextInfo = this._secondaryTextInfo;
     scoreTextInfo.positionX = 12;
     scoreTextInfo.positionY = this._nextFigureField.positionY - 20;
@@ -84,7 +96,7 @@ export class MainView {
         this._context,
         scoreTextInfo,
         BORDER_COLOR,
-        '000000');
+        `${score}`.padStart(9,'0'));
 
       scoreTextInfo.positionY += 80;
       scoreTextInfo.font = `bold 16px Cascadia Mono SemiBold`;
@@ -92,14 +104,14 @@ export class MainView {
         this._context,
         scoreTextInfo,
         BORDER_COLOR,
-        'LEVEL: 1');
+        `LEVEL: ${level}`);
 
         scoreTextInfo.positionY += 80;
         drawText(
           this._context,
           scoreTextInfo,
           BORDER_COLOR,
-          'LINES: 0');
+          `LINES: ${lines}`);
   }
 
   drawNextFigureField(): void {
@@ -133,10 +145,10 @@ export class MainView {
       drawEmptyRect(
         this._context,
         BORDER_COLOR,
-        this._gameField.positionX - 1 - i,
-        this._gameField.positionY - i,
-        this._gameField.width + i * 2,
-        this._gameField.height + i * 2
+        this._gameField.positionX - GAME_FIELD_PADDING - i,
+        this._gameField.positionY - GAME_FIELD_PADDING - i,
+        this._gameField.width + GAME_FIELD_PADDING + i * 2,
+        this._gameField.height + GAME_FIELD_PADDING + i * 2
         );      
     }
   }
