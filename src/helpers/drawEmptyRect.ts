@@ -5,10 +5,10 @@ export default function drawEmptyRect (
     y: number,
     width: number,
     height: number): void {
-        if(!context){
-            return;
-        }
-        
-        context.strokeStyle = color;
-        context.strokeRect(x, y, width, height);
+    if (context == null) {
+        return;
+    }
+
+    context.strokeStyle = color;
+    context.strokeRect(x, y, width, height);
 }

@@ -8,9 +8,8 @@ export const GAME_MOVE_PER_FRAMES: number = 94;
 
 export const BORDER_COLOR: string = '#F0FFF0';
 export const GAME_OVER_COLOR: string = '#800000';
-export const SECONDARY_TEXT_COLOR: string = '#F0FFF0';
 
-export const GAME_FIGURE_MATRIX: string[][][] = [
+export const GAME_FIGURE_MATRIX: number[][][] = [
     [
         [1, 0, 0, 0],
         [1, 0, 0, 0],
@@ -20,32 +19,32 @@ export const GAME_FIGURE_MATRIX: string[][][] = [
     [
         [1, 1, 1],
         [0, 0, 1],
-        [0, 0, 0]        
-    ],    
+        [0, 0, 0]
+    ],
     [
         [1, 1, 1],
         [1, 0, 0],
         [0, 0, 0]
-    ],    
+    ],
     [
         [1, 1],
         [1, 1]
-    ],    
+    ],
     [
         [0, 1, 1],
         [1, 1, 0],
         [0, 0, 0]
-    ],    
+    ],
     [
         [1, 1, 1],
         [0, 1, 0],
         [0, 0, 0]
-    ],    
+    ],
     [
         [1, 1, 0],
         [0, 1, 1],
         [0, 0, 0]
-     ]  
+    ]
 ];
 export const GAME_FIGURE_COLORS: string[][] = [
     ['#87CEFA', '#48D1CC', '#AFEEEE'], // light blue

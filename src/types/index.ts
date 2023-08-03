@@ -1,26 +1,33 @@
 export interface IRectangle {
-    positionX: number;
-    positionY: number;
-    width: number;
-    height: number;
+    positionX: number
+    positionY: number
+    width: number
+    height: number
 }
 
 export interface ITextInfo {
-    positionX: number;
-    positionY: number;
-    fontSize: number;
-    font: string;
-    align: CanvasTextAlign;
+    positionX: number
+    positionY: number
+    fontSize: number
+    font: string
+    align: CanvasTextAlign
 }
 
-export type GameSquare = {
-    width: number;
-    height: number;
-};
+export interface GameSquare {
+    width: number
+    height: number
+}
 
-export type GameFieldMatrixElement = {
-    color: string;
-    darkColor: string;
-    lightColor: string;
-    value: number;
-};
+export interface GameFieldMatrixElement {
+    color: string
+    darkColor: string
+    lightColor: string
+    value: number
+}
+
+export interface KeyboardState {
+    moveLeft: boolean
+    moveRight: boolean
+    moveDown: boolean
+    rotateFigure: boolean
+}

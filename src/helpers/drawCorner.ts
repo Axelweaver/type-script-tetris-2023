@@ -6,26 +6,25 @@ export default function drawCorner (
     y: number,
     width: number,
     height: number): void {
+    if (context == null) {
+        return;
+    }
+    const offset = Math.round(width * 0.1);
 
-        if(!context){
-            return;
-        }
-        const offset = Math.round(width * .1);
+    context.strokeStyle = firstColor;
+    context.beginPath();
 
-        context.strokeStyle = firstColor;
-        context.beginPath();
+    context.lineWidth = 1;
+    context.moveTo(x + offset, y + height - offset);
+    context.lineTo(x + offset, y + offset);
+    context.lineTo(x + width - offset, y + offset);
+    context.stroke();
 
-        context.lineWidth = 1;
-        context.moveTo(x + offset, y + height - offset);
-        context.lineTo(x + offset, y + offset);
-        context.lineTo(x + width - offset, y + offset);
-        context.stroke();
+    context.beginPath();
+    context.strokeStyle = secondColor;
+    context.moveTo(x + offset, y + height - offset);
+    context.lineTo(x - offset + width, y + height - offset);
+    context.lineTo(x - offset + width, y + offset);
 
-        context.beginPath();
-        context.strokeStyle = secondColor;
-        context.moveTo(x + offset, y + height - offset);
-        context.lineTo(x - offset + width, y + height - offset);
-        context.lineTo(x - offset + width, y + offset);
-
-        context.stroke();
+    context.stroke();
 }

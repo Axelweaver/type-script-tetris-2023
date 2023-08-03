@@ -1,17 +1,16 @@
 import { GameFigure, GameFieldMatrix } from './sprites';
 import { eventHandlerKeyDown, eventHandlerKeyUp } from './eventHandlers';
-import { rotateMatrix } from './helpers';
 import { MainView } from './mainView';
-import { 
+import {
     CANVAS_ID,
-    GAME_OVER_COLOR, 
-    SECONDARY_TEXT_COLOR, 
+    GAME_OVER_COLOR,
     GAME_MOVE_PER_FRAMES,
     GAME_FIELD_ROWS,
     GAME_FIELD_COLUMNS
 } from './setup';
+import { type KeyboardState } from './types';
 
-let keysState = {
+const keysState: KeyboardState = {
     moveLeft: false,
     moveRight: false,
     moveDown: false,
@@ -19,12 +18,12 @@ let keysState = {
 };
 
 document.addEventListener(
-    'keydown', 
+    'keydown',
     eventHandlerKeyDown(keysState)
 );
 document.addEventListener(
     'keyup',
-     eventHandlerKeyUp(keysState)
+    eventHandlerKeyUp(keysState)
 );
 
 const view = new MainView(CANVAS_ID);
@@ -33,63 +32,62 @@ let nextFigure = new GameFigure();
 let figure = new GameFigure();
 let countFrames = 0;
 let countKeyboardFrames = 0;
-let fieldMatrix = new GameFieldMatrix();
-let level = 1;
+const fieldMatrix = new GameFieldMatrix();
+const level = 1;
 let score = 0;
 let lines = 0;
 // game loop
-function gameLoop() {
+function gameLoop (): void {
     view.clearGameField();
 
-    if(++countKeyboardFrames > 10) {
-        if(keysState.moveLeft && figure.columnIndex > 0){
+    if (++countKeyboardFrames > 10) {
+        if (keysState.moveLeft && figure.columnIndex > 0) {
             figure.moveLeft();
-            if(fieldMatrix.isCollision(figure)){
+            if (fieldMatrix.isCollision(figure)) {
                 figure.moveRight();
             }
         }
-        if(keysState.moveRight && (figure.columnIndex +
-            figure.width) < GAME_FIELD_COLUMNS){
+        if (keysState.moveRight && (figure.columnIndex +
+            figure.width) < GAME_FIELD_COLUMNS) {
             figure.moveRight();
-            if(fieldMatrix.isCollision(figure)){
+            if (fieldMatrix.isCollision(figure)) {
                 figure.moveLeft();
             }
         }
-        if(keysState.moveDown &&
-            (figure.rowIndex + figure.height) < GAME_FIELD_ROWS){
+        if (keysState.moveDown &&
+            (figure.rowIndex + figure.height) < GAME_FIELD_ROWS) {
             figure.moveDown();
-            if(fieldMatrix.isCollision(figure)){
+            if (fieldMatrix.isCollision(figure)) {
                 figure.moveUp();
                 mergeFigure();
             }
         }
-        if(keysState.rotateFigure && figure.rowIndex >= 0) {
+        if (keysState.rotateFigure && figure.rowIndex >= 0) {
             const oldMatrix = figure.matrix;
             figure.rotate();
 
-            while (figure.columnIndex + figure.width >= GAME_FIELD_COLUMNS){
-               figure.moveLeft();
+            while (figure.columnIndex + figure.width >= GAME_FIELD_COLUMNS) {
+                figure.moveLeft();
             }
 
-            if((figure.rowIndex + figure.height) >=  GAME_FIELD_ROWS ||
-                fieldMatrix.isCollision(figure)){
+            if ((figure.rowIndex + figure.height) >= GAME_FIELD_ROWS ||
+                fieldMatrix.isCollision(figure)) {
                 figure.setMatrix(oldMatrix);
             }
         }
-        countKeyboardFrames = 0;    
+        countKeyboardFrames = 0;
     }
 
-    if(++countFrames > GAME_MOVE_PER_FRAMES){
-        
-        if((figure.rowIndex + figure.height) < GAME_FIELD_ROWS){
+    if (++countFrames > GAME_MOVE_PER_FRAMES) {
+        if ((figure.rowIndex + figure.height) < GAME_FIELD_ROWS) {
             figure.moveDown();
-            if(fieldMatrix.isCollision(figure)){
+            if (fieldMatrix.isCollision(figure)) {
                 figure.moveUp();
                 mergeFigure();
-            }            
+            }
         }
 
-        if(figure.rowIndex + figure.height >= GAME_FIELD_ROWS) {
+        if (figure.rowIndex + figure.height >= GAME_FIELD_ROWS) {
             mergeFigure();
         }
         countFrames = 0;
@@ -97,8 +95,8 @@ function gameLoop() {
 
     view.drawFieldMatrix(fieldMatrix);
     view.drawGameFigure(figure);
-    
-    if(fieldMatrix.isOver()) {
+
+    if (fieldMatrix.isOver()) {
         showGameOver();
         return;
     }
@@ -106,39 +104,38 @@ function gameLoop() {
     requestAnimationFrame(() => { gameLoop(); });
 }
 
-function mergeFigure(): void {
-        fieldMatrix.merge(figure);
-        figure = nextFigure;
-        nextFigure = new GameFigure();
-        view.cleartNextFigure();
-        view.drawNextFigure(nextFigure);
+function mergeFigure (): void {
+    fieldMatrix.merge(figure);
+    figure = nextFigure;
+    nextFigure = new GameFigure();
+    view.cleartNextFigure();
+    view.drawNextFigure(nextFigure);
 
-        const fullRowsCount = fieldMatrix.getFullRowsCount();
+    const fullRowsCount = fieldMatrix.getFullRowsCount();
 
-        if(fullRowsCount > 0){
-            score += level * fullRowsCount * 10;
-            lines += fullRowsCount;
-            fieldMatrix.removeFullRows();
-            view.clearScoreInfo();
-            view.drawScoreInfo(level, lines, score);
-        }
+    if (fullRowsCount > 0) {
+        score += level * fullRowsCount * 10;
+        lines += fullRowsCount;
+        fieldMatrix.removeFullRows();
+        view.clearScoreInfo();
+        view.drawScoreInfo(level, lines, score);
+    }
 }
 
-function showGameOver(): void {
+function showGameOver (): void {
     view.drawInfo('GAME OVER', GAME_OVER_COLOR);
 }
 
 view.drawGameField();
 view.drawNextFigureField();
 
-//view.drawInfo('GAME OVER', GAME_OVER_COLOR);
-//view.drawSecondaryInfo('secondary info', SECONDARY_TEXT_COLOR);
-//view.drawGameFigure(figure);
+// view.drawInfo('GAME OVER', GAME_OVER_COLOR);
+// view.drawSecondaryInfo('secondary info', SECONDARY_TEXT_COLOR);
+// view.drawGameFigure(figure);
 view.drawNextFigure(nextFigure);
 view.drawScoreInfo(level, lines, score);
 // start
 gameLoop();
-
 
 /* I - lightBlue, J - red, L - green, O - blue, S - cyan, T - yellow, Z - pink
 

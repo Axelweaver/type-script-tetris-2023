@@ -1,4 +1,6 @@
-export default function eventHandlerKeyDown(keys: object) {
+import { type KeyboardState } from '../types';
+
+export default function eventHandlerKeyDown (keys: KeyboardState) {
     return (e: KeyboardEvent): void => {
         if (e.code === 'ArrowLeft' || e.key === 'ArrowLeft' ||
         e.code === 'KeyA' || e.key.toUpperCase() === 'A') {
@@ -18,6 +20,6 @@ export default function eventHandlerKeyDown(keys: object) {
         if (e.code === 'ArrowUp' || e.key === 'ArrowUp' ||
         e.code === 'KeyW' || e.key.toUpperCase() === 'W') {
             keys.rotateFigure = true;
-        }   
-    }; 
+        }
+    };
 }
