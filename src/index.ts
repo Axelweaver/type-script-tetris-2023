@@ -28,7 +28,7 @@ document.addEventListener(
 );
 
 const view = new MainView(CANVAS_ID);
-// start
+
 let nextFigure = new GameFigure();
 let figure = new GameFigure();
 let countFrames = 0;
@@ -128,6 +128,7 @@ view.drawNextFigureField();
 //view.drawGameFigure(figure);
 view.drawNextFigure(nextFigure);
 view.drawScoreInfo();
+// start
 gameLoop();
 
 

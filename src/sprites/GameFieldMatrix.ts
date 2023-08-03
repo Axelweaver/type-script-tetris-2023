@@ -7,7 +7,7 @@ export default class GameFieldMatrix {
 
     constructor(){
         this._coloredMatrix = [];
-
+        // fill the game field matrix with empty cells
         for(let i=0; i < GAME_FIELD_ROWS; ++i){
             this._coloredMatrix.push(
                 new Array(GAME_FIELD_COLUMNS).fill({ 
@@ -19,7 +19,7 @@ export default class GameFieldMatrix {
             );
         }
     }
-
+    // add current figure to the field matrix
     merge(figure: GameFigure) {
         figure.matrix.forEach((row, rowIndex) => {
             row.forEach((column, columnIndex) => {
@@ -35,7 +35,7 @@ export default class GameFieldMatrix {
             })
         });
     }
-
+    // looking for collision figure with field matrix
     isCollision(figure: GameFigure): boolean {
         for(let rowIndex = 0; rowIndex < figure.matrix.length; ++rowIndex){
             for(let columnIndex = 0; columnIndex < figure.matrix[rowIndex].length; ++columnIndex){
@@ -60,7 +60,6 @@ export default class GameFieldMatrix {
     }
 
     removeFullRows(): void {
-        console.log('removeFullRows');
         // find indexes of full rows
         const fullRowsIndexes = this._coloredMatrix.map((row, rowIndex) =>
             row.every(column => column?.value === 1) ? rowIndex : 0
@@ -68,9 +67,6 @@ export default class GameFieldMatrix {
 
         const rowsCount = fullRowsIndexes.length;
         const minIndex = Math.min(...fullRowsIndexes);
-        console.log('removeFullRows', rowsCount);
-
-        console.table(this._coloredMatrix.map(r => r.map(c => c.value)));
 
         // remove full rows from game field matrix
         this._coloredMatrix.splice(minIndex, rowsCount);
@@ -85,9 +81,8 @@ export default class GameFieldMatrix {
                     value: 0 
             }));
         }
-        console.table(this._coloredMatrix.map(r => r.map(c => c.value)));
     }
-
+    // check a filled top rows in field matrix
     isOver(): boolean {
         return this._coloredMatrix[0].some(column => column.value === 1);
     }
