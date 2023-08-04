@@ -3,8 +3,11 @@ import {
     GAME_FIGURE_MATRIX,
     GAME_FIGURE_COLORS,
     INITIAL_FIGURE_COL_INDEX,
-    INITIAL_FIGURE_ROW_INDEX
+    INITIAL_FIGURE_ROW_INDEX,
+    GAME_FIELD_COLUMNS,
+    GAME_FIELD_ROWS
 } from '../setup';
+import { type GameFieldMatrix } from '../sprites';
 
 export default class GameFigure {
     private _matrix: number[][];
@@ -15,8 +18,12 @@ export default class GameFigure {
     private _columnIndex: number;
     private _width: number;
     private _height: number;
+    private readonly _gameField: GameFieldMatrix;
+    private readonly _mergeFunc: () => void;
 
-    constructor () {
+    constructor (gameField: GameFieldMatrix, mergeFunc: () => void) {
+        this._gameField = gameField;
+        this._mergeFunc = mergeFunc;
         this._matrix = GAME_FIGURE_MATRIX[
             getRandomNumber(0, GAME_FIGURE_MATRIX.length - 1)
         ];
@@ -33,6 +40,7 @@ export default class GameFigure {
         this._rowIndex = INITIAL_FIGURE_ROW_INDEX;
         this._columnIndex = INITIAL_FIGURE_COL_INDEX;
         this._calcSize();
+        document.addEventListener('keydown', this._eventHandlerKeyup);
     }
 
     private _calcSize (): void {
@@ -58,6 +66,51 @@ export default class GameFigure {
             );
         }
     }
+
+    private readonly _eventHandlerKeyup = (e: KeyboardEvent): void => {
+        if (e.keyCode === 37 || e.keyCode === 65) {
+            if (this._columnIndex > 0) {
+                --this._columnIndex;
+                if (this._gameField.isCollision(this)) {
+                    ++this._columnIndex;
+                }
+            }
+        }
+        if (e.keyCode === 39 || e.keyCode === 68) {
+            if ((this._columnIndex + this._width) < GAME_FIELD_COLUMNS) {
+                ++this._columnIndex;
+                if (this._gameField.isCollision(this)) {
+                    --this._columnIndex;
+                }
+            }
+        }
+        if (e.keyCode === 40 || e.keyCode === 83) {
+            if ((this._rowIndex + this._height) < GAME_FIELD_ROWS) {
+                ++this._rowIndex;
+                if (this._gameField.isCollision(this)) {
+                    --this._rowIndex;
+                    this._mergeFunc();
+                    this._rowIndex = INITIAL_FIGURE_ROW_INDEX;
+                    this._columnIndex = INITIAL_FIGURE_COL_INDEX;
+                }
+            }
+        }
+        if (e.keyCode === 38 || e.keyCode === 119) {
+            if (this._rowIndex >= 0) {
+                const oldMatrix = this._matrix;
+                this.rotate();
+
+                while (this._columnIndex + this._width >= GAME_FIELD_COLUMNS) {
+                    --this._columnIndex;
+                }
+
+                if ((this._rowIndex + this._height) >= GAME_FIELD_ROWS ||
+                    this._gameField.isCollision(this)) {
+                    this._matrix = oldMatrix;
+                }
+            }
+        }
+    };
 
     get matrix (): number[][] {
         return this._matrix;

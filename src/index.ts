@@ -5,8 +5,7 @@ import {
     CANVAS_ID,
     GAME_OVER_COLOR,
     GAME_MOVE_PER_FRAMES,
-    GAME_FIELD_ROWS,
-    GAME_FIELD_COLUMNS
+    GAME_FIELD_ROWS
 } from './setup';
 import { type KeyboardState } from './types';
 
@@ -22,11 +21,12 @@ document.addEventListener('keydown', eventHandlerKeyDown(keysState));
 document.addEventListener('keyup', eventHandlerKeyUp(keysState));
 // game variables
 const view = new MainView(CANVAS_ID);
-let nextFigure = new GameFigure();
-let figure = new GameFigure();
-let countFrames = 0;
-let countKeyboardFrames = 0;
 const fieldMatrix = new GameFieldMatrix();
+let nextFigure = new GameFigure(fieldMatrix, mergeFigure);
+let figure = new GameFigure(fieldMatrix, mergeFigure);
+let countFrames = 0;
+// const countKeyboardFrames = 0;
+
 const level = 1;
 let score = 0;
 let lines = 0;
@@ -35,43 +35,43 @@ let lines = 0;
 function gameLoop (): void {
     view.clearGameField();
 
-    if (++countKeyboardFrames > 10) {
-        if (keysState.moveLeft && figure.columnIndex > 0) {
-            figure.moveLeft();
-            if (fieldMatrix.isCollision(figure)) {
-                figure.moveRight();
-            }
-        }
-        if (keysState.moveRight && (figure.columnIndex +
-            figure.width) < GAME_FIELD_COLUMNS) {
-            figure.moveRight();
-            if (fieldMatrix.isCollision(figure)) {
-                figure.moveLeft();
-            }
-        }
-        if (keysState.moveDown &&
-            (figure.rowIndex + figure.height) < GAME_FIELD_ROWS) {
-            figure.moveDown();
-            if (fieldMatrix.isCollision(figure)) {
-                figure.moveUp();
-                mergeFigure();
-            }
-        }
-        if (keysState.rotateFigure && figure.rowIndex >= 0) {
-            const oldMatrix = figure.matrix;
-            figure.rotate();
+    // if (++countKeyboardFrames > 10) {
+    //     if (keysState.moveLeft && figure.columnIndex > 0) {
+    //         figure.moveLeft();
+    //         if (fieldMatrix.isCollision(figure)) {
+    //             figure.moveRight();
+    //         }
+    //     }
+    //     if (keysState.moveRight && (figure.columnIndex +
+    //         figure.width) < GAME_FIELD_COLUMNS) {
+    //         figure.moveRight();
+    //         if (fieldMatrix.isCollision(figure)) {
+    //             figure.moveLeft();
+    //         }
+    //     }
+    //     if (keysState.moveDown &&
+    //         (figure.rowIndex + figure.height) < GAME_FIELD_ROWS) {
+    //         figure.moveDown();
+    //         if (fieldMatrix.isCollision(figure)) {
+    //             figure.moveUp();
+    //             mergeFigure();
+    //         }
+    //     }
+    //     if (keysState.rotateFigure && figure.rowIndex >= 0) {
+    //         const oldMatrix = figure.matrix;
+    //         figure.rotate();
 
-            while (figure.columnIndex + figure.width >= GAME_FIELD_COLUMNS) {
-                figure.moveLeft();
-            }
+    //         while (figure.columnIndex + figure.width >= GAME_FIELD_COLUMNS) {
+    //             figure.moveLeft();
+    //         }
 
-            if ((figure.rowIndex + figure.height) >= GAME_FIELD_ROWS ||
-                fieldMatrix.isCollision(figure)) {
-                figure.setMatrix(oldMatrix);
-            }
-        }
-        countKeyboardFrames = 0;
-    }
+    //         if ((figure.rowIndex + figure.height) >= GAME_FIELD_ROWS ||
+    //             fieldMatrix.isCollision(figure)) {
+    //             figure.setMatrix(oldMatrix);
+    //         }
+    //     }
+    //     countKeyboardFrames = 0;
+    // }
     // moving the figure down
     if (++countFrames > GAME_MOVE_PER_FRAMES) {
         if ((figure.rowIndex + figure.height) < GAME_FIELD_ROWS) {
@@ -102,7 +102,7 @@ function gameLoop (): void {
 function mergeFigure (): void {
     fieldMatrix.merge(figure);
     figure = nextFigure;
-    nextFigure = new GameFigure();
+    nextFigure = new GameFigure(fieldMatrix, this);
     view.cleartNextFigure();
     view.drawNextFigure(nextFigure);
 

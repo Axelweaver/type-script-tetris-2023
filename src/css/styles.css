@@ -1,7 +1,15 @@
+@font-face {
+  font-family: 'Cascadia Mono SemiBold';
+  src: url('./fonts/CascadiaMonoPL-SemiBold.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
   body {
     background-color: black;
     color: #F8F8FF;
   }
+
   :root {
     --width: 560px;
     --height: 650px;
@@ -26,6 +34,7 @@
     background-color: transparent;
     /* background-image: url('../images/background.png'); */
   }
+  
   .text-info {
     position: absolute;
     bottom: -30%;
