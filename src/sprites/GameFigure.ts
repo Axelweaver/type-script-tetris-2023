@@ -18,6 +18,10 @@ export default class GameFigure {
     private _columnIndex: number;
     private _width: number;
     private _height: number;
+    private _moveLeft: boolean;
+    private _moveRight: boolean;
+    private _moveDown: boolean;
+    private _rotate: boolean;
     private readonly _gameField: GameFieldMatrix;
     private readonly _mergeFunc: () => void;
 
@@ -39,8 +43,13 @@ export default class GameFigure {
         this._width = 0;
         this._rowIndex = INITIAL_FIGURE_ROW_INDEX;
         this._columnIndex = INITIAL_FIGURE_COL_INDEX;
+        this._moveLeft = false;
+        this._moveRight = false;
+        this._moveDown = false;
+        this._rotate = false;
         this._calcSize();
-        document.addEventListener('keydown', this._eventHandlerKeyup);
+        document.addEventListener('keydown', this._eventHandlerKeydown);
+        document.addEventListener('keyup', this._eventHandlerKeyup);
     }
 
     private _calcSize (): void {
@@ -67,8 +76,38 @@ export default class GameFigure {
         }
     }
 
+    private readonly _eventHandlerKeydown = (e: KeyboardEvent): void => {
+        if (e.keyCode === 37 || e.keyCode === 65) {
+            this._moveLeft = true;
+        }
+        if (e.keyCode === 39 || e.keyCode === 68) {
+            this._moveRight = true;
+        }
+        if (e.keyCode === 40 || e.keyCode === 83) {
+            this._moveDown = true;
+        }
+        if (e.keyCode === 38 || e.keyCode === 119) {
+            this._rotate = true;
+        }
+    };
+
     private readonly _eventHandlerKeyup = (e: KeyboardEvent): void => {
         if (e.keyCode === 37 || e.keyCode === 65) {
+            this._moveLeft = false;
+        }
+        if (e.keyCode === 39 || e.keyCode === 68) {
+            this._moveRight = false;
+        }
+        if (e.keyCode === 40 || e.keyCode === 83) {
+            this._moveDown = false;
+        }
+        if (e.keyCode === 38 || e.keyCode === 119) {
+            this._rotate = false;
+        }
+    };
+
+    move (): void {
+        if (this._moveLeft) {
             if (this._columnIndex > 0) {
                 --this._columnIndex;
                 if (this._gameField.isCollision(this)) {
@@ -76,7 +115,7 @@ export default class GameFigure {
                 }
             }
         }
-        if (e.keyCode === 39 || e.keyCode === 68) {
+        if (this._moveRight) {
             if ((this._columnIndex + this._width) < GAME_FIELD_COLUMNS) {
                 ++this._columnIndex;
                 if (this._gameField.isCollision(this)) {
@@ -84,7 +123,7 @@ export default class GameFigure {
                 }
             }
         }
-        if (e.keyCode === 40 || e.keyCode === 83) {
+        if (this._moveDown) {
             if ((this._rowIndex + this._height) < GAME_FIELD_ROWS) {
                 ++this._rowIndex;
                 if (this._gameField.isCollision(this)) {
@@ -95,7 +134,7 @@ export default class GameFigure {
                 }
             }
         }
-        if (e.keyCode === 38 || e.keyCode === 119) {
+        if (this._rotate) {
             if (this._rowIndex >= 0) {
                 const oldMatrix = this._matrix;
                 this.rotate();
@@ -110,7 +149,7 @@ export default class GameFigure {
                 }
             }
         }
-    };
+    }
 
     get matrix (): number[][] {
         return this._matrix;
