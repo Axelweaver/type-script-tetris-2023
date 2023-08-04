@@ -24,10 +24,3 @@ export interface GameFieldMatrixElement {
     lightColor: string
     value: number
 }
-
-export interface KeyboardState {
-    moveLeft: boolean
-    moveRight: boolean
-    moveDown: boolean
-    rotateFigure: boolean
-}

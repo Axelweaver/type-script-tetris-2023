@@ -1,5 +1,4 @@
 import { GameFigure, GameFieldMatrix } from './sprites';
-import { eventHandlerKeyDown, eventHandlerKeyUp } from './eventHandlers';
 import { MainView } from './mainView';
 import {
     CANVAS_ID,
@@ -7,18 +6,7 @@ import {
     GAME_MOVE_PER_FRAMES,
     GAME_FIELD_ROWS
 } from './setup';
-import { type KeyboardState } from './types';
 
-const keysState: KeyboardState = {
-    moveLeft: false,
-    moveRight: false,
-    moveDown: false,
-    rotateFigure: false
-};
-
-// add keyboard event listeners for a keys
-document.addEventListener('keydown', eventHandlerKeyDown(keysState));
-document.addEventListener('keyup', eventHandlerKeyUp(keysState));
 // game variables
 const view = new MainView(CANVAS_ID);
 const fieldMatrix = new GameFieldMatrix();
