@@ -8,6 +8,7 @@ import {
     GAME_FIELD_COLUMNS
 } from './setup';
 import { type AnimatedMatrixElement } from './types';
+import { BackgroundMusic, FallSfx, CellSfx } from './sounds';
 
 // game variables
 const view = new MainView(CANVAS_ID);
@@ -39,6 +40,7 @@ function gameLoop (): void {
                     if (row.columnsCount > 0) {
                         fieldMatrix.removeRowCell(row.rowIndex, columnIndex1);
                         fieldMatrix.removeRowCell(row.rowIndex, columnIndex2);
+                        CellSfx.play();
                         row.columnsCount -= 2;
                     }
                 }
@@ -68,11 +70,13 @@ function gameLoop (): void {
                 // If the figure rests on the old figures when moving down
                 if (fieldMatrix.isCollision(figure)) {
                     figure.moveUp();
+                    FallSfx.play();
                     mergeFigure();
                 }
             }
             // If the figure has reached the bottom
             if (figure.rowIndex + figure.height >= GAME_FIELD_ROWS) {
+                FallSfx.play();
                 mergeFigure();
             }
             countFrames = 0;
@@ -127,5 +131,6 @@ view.drawGameField();
 view.drawNextFigureField();
 view.drawNextFigure(nextFigure);
 view.drawScoreInfo(level, lines, score);
+BackgroundMusic.play();
 // start game
 gameLoop();

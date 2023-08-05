@@ -8,6 +8,7 @@ import {
     GAME_FIELD_ROWS
 } from '../setup';
 import { type GameFieldMatrix } from '../sprites';
+import { RotateSfx, HardDropSfx } from '../sounds';
 
 export default class GameFigure {
     private _matrix: number[][];
@@ -130,6 +131,7 @@ export default class GameFigure {
                 ++this._rowIndex;
                 if (this._gameField.isCollision(this)) {
                     --this._rowIndex;
+                    HardDropSfx.play();
                     this._mergeFunc();
                     this._rowIndex = INITIAL_FIGURE_ROW_INDEX;
                     this._columnIndex = INITIAL_FIGURE_COL_INDEX;
@@ -148,6 +150,8 @@ export default class GameFigure {
                 if ((this._rowIndex + this._height) >= GAME_FIELD_ROWS ||
                     this._gameField.isCollision(this)) {
                     this._matrix = oldMatrix;
+                } else {
+                    RotateSfx.play();
                 }
             }
         }

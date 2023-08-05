@@ -28,6 +28,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["@types/howler", "npm:2.2.7"],\
             ["@typescript-eslint/eslint-plugin", "virtual:95058af8d315db3d3e1661900aa9b7e7aa3a92cb600f42d6b0e37ffe2c6887b18ff838625e16447fe4c8783df6c5b6098e9d045cee0802b6da5229f9e23f7cbf#npm:5.62.0"],\
             ["@typescript-eslint/parser", "virtual:95058af8d315db3d3e1661900aa9b7e7aa3a92cb600f42d6b0e37ffe2c6887b18ff838625e16447fe4c8783df6c5b6098e9d045cee0802b6da5229f9e23f7cbf#npm:6.2.1"],\
             ["eslint", "npm:8.46.0"],\
@@ -36,6 +37,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-n", "virtual:95058af8d315db3d3e1661900aa9b7e7aa3a92cb600f42d6b0e37ffe2c6887b18ff838625e16447fe4c8783df6c5b6098e9d045cee0802b6da5229f9e23f7cbf#npm:16.0.1"],\
             ["eslint-plugin-no-relative-import-paths", "npm:1.5.2"],\
             ["eslint-plugin-promise", "virtual:95058af8d315db3d3e1661900aa9b7e7aa3a92cb600f42d6b0e37ffe2c6887b18ff838625e16447fe4c8783df6c5b6098e9d045cee0802b6da5229f9e23f7cbf#npm:6.1.1"],\
+            ["howler", "npm:2.2.3"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
             ["vite", "virtual:95058af8d315db3d3e1661900aa9b7e7aa3a92cb600f42d6b0e37ffe2c6887b18ff838625e16447fe4c8783df6c5b6098e9d045cee0802b6da5229f9e23f7cbf#npm:4.4.7"],\
             ["vite-plugin-eslint", "virtual:95058af8d315db3d3e1661900aa9b7e7aa3a92cb600f42d6b0e37ffe2c6887b18ff838625e16447fe4c8783df6c5b6098e9d045cee0802b6da5229f9e23f7cbf#npm:1.8.1"]\
@@ -449,6 +451,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-estree-npm-1.0.1-4c9469c165-e9aa175eac.zip/node_modules/@types/estree/",\
           "packageDependencies": [\
             ["@types/estree", "npm:1.0.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/howler", [\
+        ["npm:2.2.7", {\
+          "packageLocation": "./.yarn/cache/@types-howler-npm-2.2.7-a74a6d0441-e9d6723f94.zip/node_modules/@types/howler/",\
+          "packageDependencies": [\
+            ["@types/howler", "npm:2.2.7"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -2301,6 +2312,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["howler", [\
+        ["npm:2.2.3", {\
+          "packageLocation": "./.yarn/cache/howler-npm-2.2.3-254b855819-c04ce19411.zip/node_modules/howler/",\
+          "packageDependencies": [\
+            ["howler", "npm:2.2.3"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["http-cache-semantics", [\
         ["npm:4.1.1", {\
           "packageLocation": "./.yarn/cache/http-cache-semantics-npm-4.1.1-1120131375-83ac0bc60b.zip/node_modules/http-cache-semantics/",\
@@ -3809,6 +3829,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["type-script-tetris-2023", "workspace:."],\
+            ["@types/howler", "npm:2.2.7"],\
             ["@typescript-eslint/eslint-plugin", "virtual:95058af8d315db3d3e1661900aa9b7e7aa3a92cb600f42d6b0e37ffe2c6887b18ff838625e16447fe4c8783df6c5b6098e9d045cee0802b6da5229f9e23f7cbf#npm:5.62.0"],\
             ["@typescript-eslint/parser", "virtual:95058af8d315db3d3e1661900aa9b7e7aa3a92cb600f42d6b0e37ffe2c6887b18ff838625e16447fe4c8783df6c5b6098e9d045cee0802b6da5229f9e23f7cbf#npm:6.2.1"],\
             ["eslint", "npm:8.46.0"],\
@@ -3817,6 +3838,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-n", "virtual:95058af8d315db3d3e1661900aa9b7e7aa3a92cb600f42d6b0e37ffe2c6887b18ff838625e16447fe4c8783df6c5b6098e9d045cee0802b6da5229f9e23f7cbf#npm:16.0.1"],\
             ["eslint-plugin-no-relative-import-paths", "npm:1.5.2"],\
             ["eslint-plugin-promise", "virtual:95058af8d315db3d3e1661900aa9b7e7aa3a92cb600f42d6b0e37ffe2c6887b18ff838625e16447fe4c8783df6c5b6098e9d045cee0802b6da5229f9e23f7cbf#npm:6.1.1"],\
+            ["howler", "npm:2.2.3"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
             ["vite", "virtual:95058af8d315db3d3e1661900aa9b7e7aa3a92cb600f42d6b0e37ffe2c6887b18ff838625e16447fe4c8783df6c5b6098e9d045cee0802b6da5229f9e23f7cbf#npm:4.4.7"],\
             ["vite-plugin-eslint", "virtual:95058af8d315db3d3e1661900aa9b7e7aa3a92cb600f42d6b0e37ffe2c6887b18ff838625e16447fe4c8783df6c5b6098e9d045cee0802b6da5229f9e23f7cbf#npm:1.8.1"]\
