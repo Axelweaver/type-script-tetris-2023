@@ -24,3 +24,8 @@ export interface GameFieldMatrixElement {
     lightColor: string
     value: number
 }
+
+export interface AnimatedMatrixElement {
+    rowIndex: number
+    columnsCount: number
+}

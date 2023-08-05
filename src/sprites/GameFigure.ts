@@ -52,6 +52,7 @@ export default class GameFigure {
         document.addEventListener('keyup', this._eventHandlerKeyup);
     }
 
+    // calculating width and height
     private _calcSize (): void {
         const widthArray = this._matrix.map(row =>
             row.map((col, ind) => col === 1 ? ind + 1 : 0))
@@ -64,6 +65,7 @@ export default class GameFigure {
         ).length;
     }
 
+    // move the figure in matrix for correct size
     private _checkAndNormalize (): void {
         while (this._matrix[0].every(col => col === 0)) {
             this._matrix = this._matrix.slice(1)
@@ -181,6 +183,10 @@ export default class GameFigure {
 
     get height (): number {
         return this._height;
+    }
+
+    get isMovingDown (): boolean {
+        return this._moveDown;
     }
 
     setMatrix (matrix: number[][]): void {

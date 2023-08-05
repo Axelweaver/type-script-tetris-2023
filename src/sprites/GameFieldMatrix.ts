@@ -66,7 +66,7 @@ export default class GameFieldMatrix {
         return false;
     }
 
-    private _getFullRowIndexes (): number[] {
+    getFullRowIndexes (): number[] {
         // find indexes of full rows
         const fullRowsIndexes = this._coloredMatrix.map(
             (row: GameFieldMatrixElement[], rowIndex: number): number =>
@@ -77,14 +77,36 @@ export default class GameFieldMatrix {
     }
 
     getFullRowsCount (): number {
-        const fullRowsIndexes = this._getFullRowIndexes();
+        const fullRowsIndexes = this.getFullRowIndexes();
 
         return fullRowsIndexes.length;
     }
 
+    removeRowCell (rowIndex: number, columnIndex: number): void {
+        this._coloredMatrix[rowIndex][columnIndex] = {
+            color: '',
+            darkColor: '',
+            lightColor: '',
+            value: 0
+        };
+    }
+
+    shiftEmptyRows (rowIndex: number): void {
+        console.log('shiftEmptyRows', rowIndex);
+        this._coloredMatrix.splice(rowIndex, 1);
+        this._coloredMatrix.unshift(
+            new Array(GAME_FIELD_COLUMNS).fill({
+                color: '',
+                darkColor: '',
+                lightColor: '',
+                value: 0
+            })
+        );
+    }
+
     removeFullRows (): void {
         // find indexes of full rows
-        const fullRowsIndexes = this._getFullRowIndexes();
+        const fullRowsIndexes = this.getFullRowIndexes();
 
         const rowsCount = fullRowsIndexes.length;
         const minIndex = Math.min(...fullRowsIndexes);

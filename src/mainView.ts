@@ -40,7 +40,7 @@ export class MainView {
 
         this._scoreField = {
             positionX: 12,
-            positionY: this._nextFigureField.positionY - 20,
+            positionY: this._nextFigureField.positionY - 28,
             width: Math.round(this.canvas.width / 4) - 18,
             height: this._gameField.height
         };

@@ -4,8 +4,10 @@ import {
     CANVAS_ID,
     GAME_OVER_COLOR,
     GAME_MOVE_PER_FRAMES,
-    GAME_FIELD_ROWS
+    GAME_FIELD_ROWS,
+    GAME_FIELD_COLUMNS
 } from './setup';
+import { type AnimatedMatrixElement } from './types';
 
 // game variables
 const view = new MainView(CANVAS_ID);
@@ -18,35 +20,69 @@ let countKeyboardFrames = 0;
 const level = 1;
 let score = 0;
 let lines = 0;
+let isAnimation = false;
+let lastFullRowsCount = 0;
+let animatedMatrix: AnimatedMatrixElement[] = [];
+let animatedFramesCount = 0;
 
 // game loop
 function gameLoop (): void {
     view.clearGameField();
-    if (++countKeyboardFrames > 12) {
-        figure.move();
-        countKeyboardFrames = 0;
-    }
-    // moving the figure down
-    if (++countFrames > GAME_MOVE_PER_FRAMES) {
-        if ((figure.rowIndex + figure.height) < GAME_FIELD_ROWS) {
-            figure.moveDown();
-            // If the figure rests on the old figures when moving down
-            if (fieldMatrix.isCollision(figure)) {
-                figure.moveUp();
+    // animation deleting filled rows
+    if (isAnimation && ++animatedFramesCount > 6) {
+        if (animatedMatrix.some(row => row.columnsCount > 0)) {
+            animatedMatrix.forEach((row: AnimatedMatrixElement, rowIndex: number): void => {
+                if (rowIndex === 0 ||
+                    animatedMatrix[rowIndex - 1].columnsCount < GAME_FIELD_COLUMNS - 2) {
+                    const columnIndex1 = GAME_FIELD_COLUMNS - Math.floor(row.columnsCount / 2);
+                    const columnIndex2 = Math.floor(row.columnsCount / 2) - 1;
+                    if (row.columnsCount > 0) {
+                        fieldMatrix.removeRowCell(row.rowIndex, columnIndex1);
+                        fieldMatrix.removeRowCell(row.rowIndex, columnIndex2);
+                        row.columnsCount -= 2;
+                    }
+                }
+            });
+            // remove animated empty rows from game matrix
+            animatedMatrix.filter((row: AnimatedMatrixElement): boolean =>
+                row.columnsCount === 0
+            ).forEach((row: AnimatedMatrixElement): void => {
+                fieldMatrix.shiftEmptyRows(row.rowIndex);
+            });
+        } else {
+            isAnimation = false;
+            animatedMatrix = [];
+            addScore(lastFullRowsCount);
+            lastFullRowsCount = 0;
+        }
+        animatedFramesCount = 0;
+    } else {
+        if (++countKeyboardFrames > 12) {
+            figure.move();
+            countKeyboardFrames = 0;
+        }
+        // moving the figure down
+        if (++countFrames > GAME_MOVE_PER_FRAMES) {
+            if ((figure.rowIndex + figure.height) < GAME_FIELD_ROWS) {
+                figure.moveDown();
+                // If the figure rests on the old figures when moving down
+                if (fieldMatrix.isCollision(figure)) {
+                    figure.moveUp();
+                    mergeFigure();
+                }
+            }
+            // If the figure has reached the bottom
+            if (figure.rowIndex + figure.height >= GAME_FIELD_ROWS) {
                 mergeFigure();
             }
+            countFrames = 0;
         }
-        // If the figure has reached the bottom
-        if (figure.rowIndex + figure.height >= GAME_FIELD_ROWS) {
-            mergeFigure();
-        }
-        countFrames = 0;
     }
     // drawing old figures and current
     view.drawFieldMatrix(fieldMatrix);
     view.drawGameFigure(figure);
     // Check field for a full
-    if (fieldMatrix.isOver()) {
+    if (fieldMatrix.isOver() && !isAnimation) {
         showGameOver();
         return;
     }
@@ -63,12 +99,24 @@ function mergeFigure (): void {
     const fullRowsCount = fieldMatrix.getFullRowsCount();
     // change the score if there are filled rows
     if (fullRowsCount > 0) {
-        score += level * fullRowsCount * 10;
-        lines += fullRowsCount;
-        fieldMatrix.removeFullRows();
-        view.clearScoreInfo();
-        view.drawScoreInfo(level, lines, score);
+        isAnimation = true;
+        lastFullRowsCount = fullRowsCount;
+        animatedMatrix = fieldMatrix.getFullRowIndexes().map(
+            (row: number): AnimatedMatrixElement => {
+                return {
+                    rowIndex: row,
+                    columnsCount: GAME_FIELD_COLUMNS
+                };
+            }
+        );
     }
+}
+
+function addScore (rowsCount: number): void {
+    score += level * rowsCount * 10;
+    lines += rowsCount;
+    view.clearScoreInfo();
+    view.drawScoreInfo(level, lines, score);
 }
 
 function showGameOver (): void {
