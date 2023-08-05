@@ -189,26 +189,12 @@ export default class GameFigure {
         return this._moveDown;
     }
 
-    setMatrix (matrix: number[][]): void {
-        this._matrix = matrix;
-        this._checkAndNormalize();
-        this._calcSize();
-    }
-
     moveUp (): void {
         --this._rowIndex;
     }
 
     moveDown (): void {
         ++this._rowIndex;
-    }
-
-    moveLeft (): void {
-        --this._columnIndex;
-    }
-
-    moveRight (): void {
-        ++this._columnIndex;
     }
 
     rotate (): void {

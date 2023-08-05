@@ -92,7 +92,6 @@ export default class GameFieldMatrix {
     }
 
     shiftEmptyRows (rowIndex: number): void {
-        console.log('shiftEmptyRows', rowIndex);
         this._coloredMatrix.splice(rowIndex, 1);
         this._coloredMatrix.unshift(
             new Array(GAME_FIELD_COLUMNS).fill({
@@ -102,28 +101,6 @@ export default class GameFieldMatrix {
                 value: 0
             })
         );
-    }
-
-    removeFullRows (): void {
-        // find indexes of full rows
-        const fullRowsIndexes = this.getFullRowIndexes();
-
-        const rowsCount = fullRowsIndexes.length;
-        const minIndex = Math.min(...fullRowsIndexes);
-
-        // remove full rows from game field matrix
-        this._coloredMatrix.splice(minIndex, rowsCount);
-
-        // add empty rows to begin game field matrix
-        for (let i: number = 0; i < rowsCount; ++i) {
-            this._coloredMatrix.unshift(
-                new Array(GAME_FIELD_COLUMNS).fill({
-                    color: '',
-                    darkColor: '',
-                    lightColor: '',
-                    value: 0
-                }));
-        }
     }
 
     // check a filled top rows in field matrix

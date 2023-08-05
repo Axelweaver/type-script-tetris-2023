@@ -96,11 +96,11 @@ function mergeFigure (): void {
     view.cleartNextFigure();
     view.drawNextFigure(nextFigure);
 
-    const fullRowsCount = fieldMatrix.getFullRowsCount();
-    // change the score if there are filled rows
-    if (fullRowsCount > 0) {
+    lastFullRowsCount = fieldMatrix.getFullRowsCount();
+    // starting animation if having filled rows
+    if (lastFullRowsCount > 0) {
         isAnimation = true;
-        lastFullRowsCount = fullRowsCount;
+        // create an array of rows, the removal of which we animate
         animatedMatrix = fieldMatrix.getFullRowIndexes().map(
             (row: number): AnimatedMatrixElement => {
                 return {
