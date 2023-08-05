@@ -50,6 +50,9 @@ function gameLoop (): void {
                 row.columnsCount === 0
             ).forEach((row: AnimatedMatrixElement): void => {
                 fieldMatrix.shiftEmptyRows(row.rowIndex);
+                // this is so that later you do not delete the same rows,
+                // more precisely the extra rows from above
+                row.columnsCount = -1;
             });
         } else {
             isAnimation = false;
