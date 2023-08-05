@@ -29,7 +29,7 @@ let animatedFramesCount = 0;
 function gameLoop (): void {
     view.clearGameField();
     // animation deleting filled rows
-    if (isAnimation && ++animatedFramesCount > 6) {
+    if (isAnimation && ++animatedFramesCount > 10) {
         if (animatedMatrix.some(row => row.columnsCount > 0)) {
             animatedMatrix.forEach((row: AnimatedMatrixElement, rowIndex: number): void => {
                 if (rowIndex === 0 ||
@@ -57,7 +57,7 @@ function gameLoop (): void {
         }
         animatedFramesCount = 0;
     } else {
-        if (++countKeyboardFrames > 12) {
+        if (++countKeyboardFrames > 16) {
             figure.move();
             countKeyboardFrames = 0;
         }
