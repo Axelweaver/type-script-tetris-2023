@@ -103,7 +103,7 @@ export default class GameFigure {
         if (e.keyCode === 40 || e.keyCode === 83) {
             this._moveDown = false;
         }
-        if (e.keyCode === 38 || e.keyCode === 119) {
+        if (e.keyCode === 38 || e.keyCode === 87) {
             this._rotate = false;
         }
     };
