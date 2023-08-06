@@ -88,6 +88,7 @@ export class MainView {
         };
         this._drawSoundButton();
         this.canvas.addEventListener('click', this._mouseClickEventHandler);
+        document.addEventListener('keypress', this._muteKeypressEventHandler);
     }
 
     private readonly _mouseClickEventHandler = (e: MouseEvent): void => {
@@ -103,6 +104,15 @@ export class MainView {
         this._isMutedSound = isMatch ? !this._isMutedSound : this._isMutedSound;
 
         if (isMatch) {
+            this._clearSoundButton();
+            Howler.mute(this._isMutedSound);
+            this.drawSoundControl();
+        }
+    };
+
+    private readonly _muteKeypressEventHandler = (e: KeyboardEvent): void => {
+        if (e.code === 'KeyM') {
+            this._isMutedSound = !this._isMutedSound;
             this._clearSoundButton();
             Howler.mute(this._isMutedSound);
             this.drawSoundControl();
