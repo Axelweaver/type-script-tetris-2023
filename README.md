@@ -71,7 +71,13 @@ To exit debug mode - Q
 If you want to run an ESLint check and fix the simplest remarks right away, run this command:
 
 ```bash
-yarn lint --fix
+yarn lint
+```
+
+you can also run the TypeScript compiler without assembly to check types in your code:
+
+```bash
+yarn check-types
 ```
 
 ### Development environment
