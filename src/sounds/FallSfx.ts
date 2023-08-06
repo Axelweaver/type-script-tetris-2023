@@ -1,7 +1,8 @@
 import { Howl } from 'howler'; // Howler
+import FX_FALL_MP3 from './mp3/fx-fall.mp3';
 
 const FallSfx = new Howl({
-    src: ['./src/sounds/mp3/fx-fall.mp3'],
+    src: [FX_FALL_MP3],
     volume: 1,
     onplayerror: function () {
         FallSfx.once('unlock', function () {
