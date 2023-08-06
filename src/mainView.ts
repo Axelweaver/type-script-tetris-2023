@@ -56,7 +56,7 @@ export class MainView {
 
         this._secondaryTextInfo = {
             positionX: Math.round(this.canvas.width / 2),
-            positionY: Math.round(this.canvas.height / 2) + Math.round(this.canvas.height / 5),
+            positionY: Math.round(this.canvas.height / 2) + Math.round(this.canvas.height / 7),
             fontSize: Math.round(this.canvas.width / 22),
             font: '',
             align: 'center'
@@ -67,6 +67,16 @@ export class MainView {
             width: Math.round(gameFieldWidth / GAME_FIELD_COLUMNS) - GAME_FIELD_PADDING,
             height: Math.round(this._gameField.height / GAME_FIELD_ROWS) - GAME_FIELD_PADDING
         };
+    }
+
+    clear (): void {
+        clearRect(this._context,
+            {
+                positionX: 0,
+                positionY: 0,
+                width: this.canvas.width,
+                height: this.canvas.height
+            });
     }
 
     clearGameField (): void {
@@ -82,7 +92,7 @@ export class MainView {
     }
 
     drawScoreInfo (level: number, lines: number, score: number): void {
-        const scoreTextInfo = this._secondaryTextInfo;
+        const scoreTextInfo = { ...this._secondaryTextInfo };
         scoreTextInfo.positionX = 12;
         scoreTextInfo.positionY = this._nextFigureField.positionY - 20;
         scoreTextInfo.font = 'bold 16px Cascadia Mono SemiBold';
@@ -120,7 +130,7 @@ export class MainView {
     }
 
     drawNextFigureField (): void {
-        const nextTextInfo = this._secondaryTextInfo;
+        const nextTextInfo = { ...this._secondaryTextInfo };
         nextTextInfo.positionX = this._nextFigureField.positionX;
         nextTextInfo.positionY = this._nextFigureField.positionY - 20;
         nextTextInfo.font = 'bold 16px Cascadia Mono SemiBold';
@@ -251,6 +261,14 @@ export class MainView {
     }
 
     drawInfo (text: string, color: string): void {
+        drawFilledRect(
+            this._context,
+            '#0a0a0a', // '#778899',
+            this._textInfo.positionX - Math.round(this.canvas.width / 3),
+            this._textInfo.positionY - Math.round(this.canvas.height / 8),
+            Math.round(this.canvas.width / 1.5),
+            Math.round(this.canvas.height / 3)
+        );
         drawText(
             this._context,
             this._textInfo,

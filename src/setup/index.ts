@@ -7,7 +7,8 @@ export const INITIAL_FIGURE_COL_INDEX: number = 3;
 export const GAME_MOVE_PER_FRAMES: number = 94;
 
 export const BORDER_COLOR: string = '#F0FFF0';
-export const GAME_OVER_COLOR: string = '#800000';
+export const GAME_OVER_COLOR: string = '#B22222';
+export const START_GAME_COLOR: string = '#DCDCDC';
 
 export const GAME_FIGURE_MATRIX: number[][][] = [
     [

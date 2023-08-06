@@ -3,6 +3,7 @@ import { MainView } from './mainView';
 import {
     CANVAS_ID,
     GAME_OVER_COLOR,
+    START_GAME_COLOR,
     GAME_MOVE_PER_FRAMES,
     GAME_FIELD_ROWS,
     GAME_FIELD_COLUMNS
@@ -18,14 +19,14 @@ let figure = new GameFigure(fieldMatrix, mergeFigure);
 let countFrames = 0;
 let countKeyboardFrames = 0;
 
-const level = 1;
+let level = 1;
 let score = 0;
 let lines = 0;
 let isAnimation = false;
 let lastFullRowsCount = 0;
 let animatedMatrix: AnimatedMatrixElement[] = [];
 let animatedFramesCount = 0;
-
+let isStartGame = false;
 // game loop
 function gameLoop (): void {
     view.clearGameField();
@@ -62,8 +63,13 @@ function gameLoop (): void {
         }
         animatedFramesCount = 0;
     } else {
-        if (++countKeyboardFrames > 16) {
+        if (figure.isMoving && figure.rowIndex >= 0) {
             figure.move();
+            if (countFrames > 0) {
+                countFrames -= 10;
+            }
+        }
+        if (++countKeyboardFrames > 16) {
             countKeyboardFrames = 0;
         }
         // moving the figure down
@@ -127,13 +133,50 @@ function addScore (rowsCount: number): void {
 }
 
 function showGameOver (): void {
+    isStartGame = false;
+    BackgroundMusic.stop();
     view.drawInfo('GAME OVER', GAME_OVER_COLOR);
+    view.drawSecondaryInfo('press space to start', START_GAME_COLOR);
 }
-// show initial screen
+
+document.addEventListener('keypress', function (e) {
+    if (e.keyCode === 32) {
+        if (isStartGame) {
+            return;
+        }
+        isStartGame = true;
+        startGame();
+    }
+});
+
+function startGame (): void {
+    nextFigure = new GameFigure(fieldMatrix, mergeFigure);
+    figure = new GameFigure(fieldMatrix, mergeFigure);
+    countFrames = 0;
+    countKeyboardFrames = 0;
+
+    level = 1;
+    score = 0;
+    lines = 0;
+    isAnimation = false;
+    lastFullRowsCount = 0;
+    animatedMatrix = [];
+    // show initial screen
+    view.clear();
+    view.drawGameField();
+    view.drawNextFigureField();
+    view.drawNextFigure(nextFigure);
+    view.drawScoreInfo(level, lines, score);
+    fieldMatrix.reset();
+    BackgroundMusic.play();
+    // start game
+    gameLoop();
+}
+
 view.drawGameField();
 view.drawNextFigureField();
 view.drawNextFigure(nextFigure);
 view.drawScoreInfo(level, lines, score);
-BackgroundMusic.play();
-// start game
-gameLoop();
+
+view.drawInfo('GET READY!', START_GAME_COLOR);
+view.drawSecondaryInfo('press space to start', START_GAME_COLOR);

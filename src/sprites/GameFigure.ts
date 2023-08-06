@@ -89,7 +89,7 @@ export default class GameFigure {
         if (e.keyCode === 40 || e.keyCode === 83) {
             this._moveDown = true;
         }
-        if (e.keyCode === 38 || e.keyCode === 119) {
+        if (e.keyCode === 38 || e.keyCode === 87) {
             this._rotate = true;
         }
     };
@@ -117,6 +117,7 @@ export default class GameFigure {
                     ++this._columnIndex;
                 }
             }
+            this._moveLeft = false;
         }
         if (this._moveRight) {
             if ((this._columnIndex + this._width) < GAME_FIELD_COLUMNS) {
@@ -125,6 +126,7 @@ export default class GameFigure {
                     --this._columnIndex;
                 }
             }
+            this._moveRight = false;
         }
         if (this._moveDown) {
             if ((this._rowIndex + this._height) < GAME_FIELD_ROWS) {
@@ -137,23 +139,23 @@ export default class GameFigure {
                     this._columnIndex = INITIAL_FIGURE_COL_INDEX;
                 }
             }
+            this._moveDown = false;
         }
         if (this._rotate) {
             if (this._rowIndex >= 0) {
                 const oldMatrix = this._matrix;
                 this.rotate();
 
-                while (this._columnIndex + this._width >= GAME_FIELD_COLUMNS) {
-                    --this._columnIndex;
-                }
-
                 if ((this._rowIndex + this._height) >= GAME_FIELD_ROWS ||
+                    this._columnIndex + this._width >= GAME_FIELD_COLUMNS ||
                     this._gameField.isCollision(this)) {
                     this._matrix = oldMatrix;
+                    this._calcSize();
                 } else {
                     RotateSfx.play();
                 }
             }
+            this._rotate = false;
         }
     }
 
@@ -191,6 +193,10 @@ export default class GameFigure {
 
     get isMovingDown (): boolean {
         return this._moveDown;
+    }
+
+    get isMoving (): boolean {
+        return this._moveDown || this._moveLeft || this._moveRight || this._rotate;
     }
 
     moveUp (): void {

@@ -8,6 +8,13 @@ export default class GameFieldMatrix {
     constructor () {
         this._coloredMatrix = [];
         // fill the game field matrix with empty cells
+        this.reset();
+    }
+
+    reset (): void {
+        if (this._coloredMatrix.length > 0) {
+            this._coloredMatrix.splice(0, this._coloredMatrix.length);
+        }
         for (let i = 0; i < GAME_FIELD_ROWS; ++i) {
             this._coloredMatrix.push(
                 new Array(GAME_FIELD_COLUMNS).fill({
