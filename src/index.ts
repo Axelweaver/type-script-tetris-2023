@@ -167,6 +167,7 @@ function startGame (): void {
     view.drawNextFigureField();
     view.drawNextFigure(nextFigure);
     view.drawScoreInfo(level, lines, score);
+    view.drawSoundControl();
     fieldMatrix.reset();
     BackgroundMusic.play();
     // start game

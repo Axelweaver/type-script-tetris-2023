@@ -4,9 +4,19 @@ import {
     type GameSquare,
     type GameFieldMatrixElement
 } from './types';
-import { clearRect, drawFilledRect, drawEmptyRect, drawText, drawCorner } from './helpers';
+import {
+    clearRect,
+    drawFilledRect,
+    drawEmptyRect,
+    drawText,
+    drawCorner,
+    drawSoundIcon,
+    drawMutedSoundIcon
+} from './helpers';
+
 import { BORDER_COLOR, GAME_FIELD_COLUMNS, GAME_FIELD_ROWS, GAME_FIELD_PADDING } from './setup';
 import { type GameFieldMatrix, type GameFigure } from './sprites';
+import { Howler } from 'howler';
 
 export class MainView {
     canvas: HTMLCanvasElement;
@@ -14,9 +24,11 @@ export class MainView {
     private readonly _gameField: IRectangle;
     private readonly _nextFigureField: IRectangle;
     private readonly _scoreField: IRectangle;
+    private readonly _soundButtonField: IRectangle;
     private readonly _textInfo: ITextInfo;
     private readonly _secondaryTextInfo: ITextInfo;
     private readonly _gameSquare: GameSquare;
+    private _isMutedSound: boolean = false;
 
     constructor (canvasName: string) {
         this.canvas = document.querySelector(canvasName) as HTMLCanvasElement;
@@ -67,6 +79,62 @@ export class MainView {
             width: Math.round(gameFieldWidth / GAME_FIELD_COLUMNS) - GAME_FIELD_PADDING,
             height: Math.round(this._gameField.height / GAME_FIELD_ROWS) - GAME_FIELD_PADDING
         };
+
+        this._soundButtonField = {
+            positionX: this.canvas.width - 68,
+            positionY: this.canvas.height - 72,
+            width: 56,
+            height: 56
+        };
+        this._drawSoundButton();
+        this.canvas.addEventListener('click', this._mouseClickEventHandler);
+    }
+
+    private readonly _mouseClickEventHandler = (e: MouseEvent): void => {
+        const canvasRect = this.canvas.getBoundingClientRect();
+        const x = e.clientX - canvasRect.left;
+        const y = e.clientY - canvasRect.top;
+
+        const isMatch = x > this._soundButtonField.positionX &&
+        x < this._soundButtonField.positionX + this._soundButtonField.width &&
+        y > this._soundButtonField.positionY &&
+        y < this._soundButtonField.positionY + this._soundButtonField.height;
+
+        this._isMutedSound = isMatch ? !this._isMutedSound : this._isMutedSound;
+
+        if (isMatch) {
+            this._clearSoundButton();
+            Howler.mute(this._isMutedSound);
+            this.drawSoundControl();
+        }
+    };
+
+    drawSoundControl (): void {
+        if (this._isMutedSound) {
+            this._drawMutedSoundButton();
+            return;
+        }
+        this._drawSoundButton();
+    }
+
+    private _clearSoundButton (): void {
+        clearRect(this._context, this._soundButtonField);
+    }
+
+    private _drawSoundButton (): void {
+        drawSoundIcon(this._context,
+            this.canvas.width - 64,
+            this.canvas.height - 64,
+            BORDER_COLOR,
+            0.1);
+    }
+
+    private _drawMutedSoundButton (): void {
+        drawMutedSoundIcon(this._context,
+            this.canvas.width - 60,
+            this.canvas.height - 58,
+            BORDER_COLOR,
+            0.1);
     }
 
     clear (): void {
