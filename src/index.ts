@@ -65,12 +65,6 @@ function gameLoop (): void {
     } else {
         if (figure.isMoving && figure.rowIndex >= 0) {
             figure.move();
-            if (countFrames > 0) {
-                countFrames -= 10;
-            }
-        }
-        if (++countKeyboardFrames > 16) {
-            countKeyboardFrames = 0;
         }
         // moving the figure down
         if (++countFrames > GAME_MOVE_PER_FRAMES) {
