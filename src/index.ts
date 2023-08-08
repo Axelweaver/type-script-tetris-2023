@@ -17,8 +17,6 @@ const fieldMatrix = new GameFieldMatrix();
 let nextFigure = new GameFigure(fieldMatrix, mergeFigure);
 let figure = new GameFigure(fieldMatrix, mergeFigure);
 let countFrames = 0;
-let countKeyboardFrames = 0;
-
 let level = 1;
 let score = 0;
 let lines = 0;
@@ -133,7 +131,7 @@ function showGameOver (): void {
     view.drawSecondaryInfo('press space to start', START_GAME_COLOR);
 }
 
-document.addEventListener('keypress', function (e) {
+document.addEventListener('keypress', function (e: KeyboardEvent): void {
     if (e.keyCode === 32) {
         if (isStartGame) {
             return;
@@ -146,9 +144,6 @@ document.addEventListener('keypress', function (e) {
 function startGame (): void {
     nextFigure = new GameFigure(fieldMatrix, mergeFigure);
     figure = new GameFigure(fieldMatrix, mergeFigure);
-    countFrames = 0;
-    countKeyboardFrames = 0;
-
     level = 1;
     score = 0;
     lines = 0;
